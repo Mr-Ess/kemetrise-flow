@@ -200,6 +200,81 @@ function ControlTower() {
           </SectionCard>
         ))}
 
+        <SectionCard title="خطوات تنفيذ متأخرة">
+          {lateSteps.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">كل خطوات التنفيذ في موعدها</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {lateSteps.map((s) => (
+                <li key={s.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{s.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      <span className="num">{orderName(s.order_id)?.code ?? ""}</span> · مخطط{" "}
+                      {s.planned_end}
+                      {Number(s.delay_days) > 0 ? ` · تأخير ${s.delay_days} يوم` : ""}
+                    </p>
+                  </div>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/orders/$id" params={{ id: s.order_id }}>
+                      فتح
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+
+        <SectionCard title="دفعات إلكترونية بانتظار المراجعة">
+          {pendingIntents.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">لا توجد دفعات معلّقة</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {pendingIntents.map((i) => (
+                <li key={i.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="num text-sm font-semibold">{egp(Number(i.amount))}</p>
+                    <p className="text-xs text-muted-foreground">
+                      <span className="num">{i.code}</span> ·{" "}
+                      {orderName(i.order_id)?.code ?? ""} · {formatDateTime(i.created_at)}
+                    </p>
+                  </div>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/orders/$id" params={{ id: i.order_id }}>
+                      مراجعة
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+
+        <SectionCard title="طلبات تعديل من العملاء">
+          {openChanges.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">لا توجد طلبات تعديل مفتوحة</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {openChanges.map((c) => (
+                <li key={c.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm">{c.message}</p>
+                    <p className="text-xs text-muted-foreground">{formatDateTime(c.created_at)}</p>
+                  </div>
+                  {c.request_id ? (
+                    <Button asChild size="sm" variant="outline">
+                      <Link to="/requests/$id" params={{ id: c.request_id }}>
+                        فتح
+                      </Link>
+                    </Button>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+
         <SectionCard title="أوامر تجاوزت موعد التسليم">
           {lateOrders.length === 0 ? (
             <p className="py-6 text-center text-sm text-success">كل الأوامر ضمن مواعيدها</p>
