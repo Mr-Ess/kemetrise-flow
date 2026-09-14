@@ -183,6 +183,8 @@ function SettingsPage() {
         </SectionCard>
       ) : null}
 
+      <PaymentGatewaysCard />
+
       {isAdmin ? (
         <SectionCard title="فريق العمل والصلاحيات">
           {usersQuery.isLoading ? <LoadingState rows={3} /> : null}
