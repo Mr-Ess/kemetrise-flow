@@ -336,8 +336,8 @@ export function ContentManager() {
       }
       const table = supabase.from(spec.table as "website_services");
       const res = row['id']
-        ? await table.update(payload).eq("id", String(row['id']))
-        : await table.insert(payload);
+        ? await table.update(payload as never).eq("id", String(row['id']))
+        : await table.insert(payload as never);
       if (res.error) throw res.error;
     },
     onSuccess: () => {

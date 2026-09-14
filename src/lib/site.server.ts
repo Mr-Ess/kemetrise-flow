@@ -49,9 +49,6 @@ function clean(v: string | null | undefined, max = 500) {
 
 /** Loads all published website content in one round trip. */
 export async function loadSiteContent() {
-  const pub = (t: string, order = "sort_order") =>
-    supabaseAdmin.from(t as "website_services").select("*").eq("is_published", true).order(order);
-
   const [
     settings,
     hero,
@@ -73,25 +70,41 @@ export async function loadSiteContent() {
   ] = await Promise.all([
     supabaseAdmin.from("website_settings").select("*").limit(1).maybeSingle(),
     supabaseAdmin.from("website_hero").select("*").eq("is_active", true).limit(1).maybeSingle(),
-    pub("website_stats"),
-    pub("website_features"),
-    pub("website_how_it_works"),
-    pub("website_services"),
-    pub("website_products"),
-    pub("website_projects"),
-    pub("website_portfolio"),
-    pub("website_partners"),
-    pub("website_agents"),
-    pub("website_leadership_team"),
+    supabaseAdmin.from("website_stats").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_features").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin
+      .from("website_how_it_works")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order"),
+    supabaseAdmin.from("website_services").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_products").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_projects").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin
+      .from("website_portfolio")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order"),
+    supabaseAdmin.from("website_partners").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_agents").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin
+      .from("website_leadership_team")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order"),
     supabaseAdmin
       .from("website_news")
       .select("*")
       .eq("is_published", true)
       .order("published_at", { ascending: false }),
-    pub("website_testimonials"),
-    pub("website_faqs"),
-    pub("website_plans"),
-    pub("website_about"),
+    supabaseAdmin
+      .from("website_testimonials")
+      .select("*")
+      .eq("is_published", true)
+      .order("sort_order"),
+    supabaseAdmin.from("website_faqs").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_plans").select("*").eq("is_published", true).order("sort_order"),
+    supabaseAdmin.from("website_about").select("*").eq("is_published", true).order("sort_order"),
   ]);
 
   return {
