@@ -479,6 +479,7 @@ function RequestDetail() {
                 كل الطلبات
               </Link>
             </Button>
+            <PortalLinkButton customerId={r.customer_id} requestId={id} />
             {data?.order ? (
               <Button asChild size="sm">
                 <Link to="/orders/$id" params={{ id: data.order.id }}>
