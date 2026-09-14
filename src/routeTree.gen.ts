@@ -26,6 +26,8 @@ import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
+import { Route as PortalIndexRouteImport } from './routes/portal.index'
+import { Route as PortalTokenRouteImport } from './routes/portal.$token'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers.index'
 import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
 import { Route as AuthenticatedOrdersIndexRouteImport } from './routes/_authenticated/orders.index'
@@ -120,6 +122,16 @@ const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const PortalIndexRoute = PortalIndexRouteImport.update({
+  id: '/portal/',
+  path: '/portal/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PortalTokenRoute = PortalTokenRouteImport.update({
+  id: '/portal/$token',
+  path: '/portal/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedCustomersIndexRoute =
   AuthenticatedCustomersIndexRouteImport.update({
     id: '/customers/',
@@ -178,6 +190,8 @@ export interface FileRoutesByFullPath {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/portal/$token': typeof PortalTokenRoute
+  '/portal/': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
@@ -203,6 +217,8 @@ export interface FileRoutesByTo {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/portal/$token': typeof PortalTokenRoute
+  '/portal': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
@@ -230,6 +246,8 @@ export interface FileRoutesById {
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
+  '/portal/$token': typeof PortalTokenRoute
+  '/portal/': typeof PortalIndexRoute
   '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/_authenticated/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/_authenticated/requests/$id': typeof AuthenticatedRequestsIdRoute
@@ -257,6 +275,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/portal/$token'
+    | '/portal/'
     | '/customers/$id'
     | '/orders/$id'
     | '/requests/$id'
@@ -282,6 +302,8 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/portal/$token'
+    | '/portal'
     | '/customers/$id'
     | '/orders/$id'
     | '/requests/$id'
@@ -308,6 +330,8 @@ export interface FileRouteTypes {
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/_authenticated/tasks'
+    | '/portal/$token'
+    | '/portal/'
     | '/_authenticated/customers/$id'
     | '/_authenticated/orders/$id'
     | '/_authenticated/requests/$id'
@@ -321,6 +345,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  PortalTokenRoute: typeof PortalTokenRoute
+  PortalIndexRoute: typeof PortalIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -444,6 +470,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/portal/': {
+      id: '/portal/'
+      path: '/portal'
+      fullPath: '/portal/'
+      preLoaderRoute: typeof PortalIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/portal/$token': {
+      id: '/portal/$token'
+      path: '/portal/$token'
+      fullPath: '/portal/$token'
+      preLoaderRoute: typeof PortalTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/customers/': {
       id: '/_authenticated/customers/'
       path: '/customers'
@@ -551,6 +591,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  PortalTokenRoute: PortalTokenRoute,
+  PortalIndexRoute: PortalIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

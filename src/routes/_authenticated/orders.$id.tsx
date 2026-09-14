@@ -21,6 +21,9 @@ import {
 } from "@/components/ui-kit";
 import { CommentsPanel } from "@/components/CommentsPanel";
 import { ActivityFeed } from "@/components/ActivityFeed";
+import { OrderExecutionPanel } from "@/components/OrderExecutionPanel";
+import { OnlinePaymentsPanel } from "@/components/OnlinePaymentsPanel";
+import { PortalLinkButton } from "@/components/PortalLinkButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
