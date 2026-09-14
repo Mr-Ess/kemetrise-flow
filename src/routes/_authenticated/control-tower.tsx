@@ -48,6 +48,19 @@ function ControlTower() {
           .select("id, action, description, created_at, entity_code")
           .order("created_at", { ascending: false })
           .limit(20),
+        supabase
+          .from("order_execution_steps")
+          .select("id, order_id, name, status, planned_end, delay_days")
+          .not("status", "in", "(done,skipped)"),
+        supabase
+          .from("payment_intents")
+          .select("id, code, order_id, amount, status, created_at")
+          .in("status", ["submitted", "under_review"]),
+        supabase
+          .from("quotation_change_requests")
+          .select("id, request_id, message, created_at, status")
+          .eq("status", "open")
+          .order("created_at", { ascending: false }),
       ]);
       if (requests.error) throw requests.error;
       return {
@@ -57,6 +70,9 @@ function ControlTower() {
         tasks: tasks.data ?? [],
         rules: rules.data,
         activities: activities.data ?? [],
+        steps: steps.data ?? [],
+        intents: intents.data ?? [],
+        changes: changes.data ?? [],
       };
     },
     refetchInterval: 120000,
