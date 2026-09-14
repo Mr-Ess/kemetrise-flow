@@ -116,6 +116,11 @@ function ControlTower() {
     (t) => t.due_date && t.due_date < today && t.status !== "completed",
   );
   const unpaid = data.financials.filter((f) => Number(f.remaining_amount ?? 0) > 0);
+  const orderName = (id: string) => data.orders.find((o) => o.id === id);
+  const lateSteps = data.steps.filter((s) => s.planned_end && s.planned_end < today);
+  const pendingIntents = data.intents;
+  const openChanges = data.changes;
+
 
   const groups = [
     { title: `تسعير متأخر (أكثر من ${costingSla} ساعة)`, rows: lateCosting },
