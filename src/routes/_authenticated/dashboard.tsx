@@ -120,7 +120,7 @@ function DashboardPage() {
         actions={
           <>
             <Button asChild size="sm">
-              <Link to="/requests/new">
+              <Link to="/requests/new" search={{ customer: undefined }}>
                 <Plus className="size-4" />
                 طلب بيع جديد
               </Link>

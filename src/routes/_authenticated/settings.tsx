@@ -48,7 +48,8 @@ type RulesForm = {
 };
 
 function SettingsPage() {
-  const { isAdmin, isManager, profile } = useAuth();
+  const { hasRole, isManager, userId } = useAuth();
+  const isAdmin = hasRole("admin");
   const queryClient = useQueryClient();
   const [form, setForm] = useState<RulesForm | null>(null);
 
@@ -200,7 +201,7 @@ function SettingsPage() {
                   <tr key={u.id} className="border-b border-border/60">
                     <td className="p-2 font-medium">
                       {u.full_name ?? "—"}
-                      {u.id === profile?.id ? (
+                      {u.id === userId ? (
                         <span className="ms-2 text-xs text-muted-foreground">(أنت)</span>
                       ) : null}
                     </td>

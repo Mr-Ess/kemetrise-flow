@@ -281,7 +281,7 @@ function CatalogPage() {
                     <td className="p-2">
                       <StatusPill
                         label={p.is_active ? "مفعّل" : "موقوف"}
-                        tone={p.is_active ? "success" : "muted"}
+                        tone={p.is_active ? "success" : "neutral"}
                       />
                     </td>
                     {isManager ? (

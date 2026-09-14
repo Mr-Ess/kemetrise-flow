@@ -37,7 +37,7 @@ export function ActivityFeed({
             <span className="absolute top-1.5 -right-4 size-2 rounded-full bg-primary" />
             <p className="text-sm">{a.description ?? a.action}</p>
             <p className="text-xs text-muted-foreground">
-              {(a.profiles as { full_name: string } | null)?.full_name ?? "النظام"} ·{" "}
+              {(a.profiles as unknown as { full_name: string } | null)?.full_name ?? "النظام"} ·{" "}
               {formatDateTime(a.created_at)}
             </p>
           </li>

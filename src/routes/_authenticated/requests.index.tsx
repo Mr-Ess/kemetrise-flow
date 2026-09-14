@@ -66,7 +66,7 @@ function RequestsPage() {
         subtitle={`${rows.length} طلب`}
         actions={
           <Button asChild size="sm">
-            <Link to="/requests/new">
+            <Link to="/requests/new" search={{ customer: undefined }}>
               <Plus className="size-4" />
               طلب جديد
             </Link>
@@ -120,7 +120,7 @@ function RequestsPage() {
           description="ابدأ بإنشاء طلب بيع جديد أو عدّل الفلاتر."
           action={
             <Button asChild size="sm">
-              <Link to="/requests/new">طلب جديد</Link>
+              <Link to="/requests/new" search={{ customer: undefined }}>طلب جديد</Link>
             </Button>
           }
         />
