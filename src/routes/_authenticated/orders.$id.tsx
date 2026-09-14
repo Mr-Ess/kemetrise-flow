@@ -253,6 +253,7 @@ function OrderDetail() {
                 </Link>
               </Button>
             ) : null}
+            <PortalLinkButton customerId={o.customer_id} orderId={id} />
             <Button size="sm" onClick={() => setPayOpen(true)}>
               <Plus className="size-4" />
               تسجيل دفعة
