@@ -579,12 +579,17 @@ function RequestDetail() {
 
       <div className="mt-4">
         <Tabs defaultValue={canSeeCosts ? "costing" : "quotations"}>
-          <TabsList className="flex-wrap">
+          <TabsList>
             {canSeeCosts ? <TabsTrigger value="costing">التسعير الداخلي</TabsTrigger> : null}
             <TabsTrigger value="quotations">عروض الأسعار</TabsTrigger>
+            <TabsTrigger value="changes">طلبات التعديل</TabsTrigger>
             <TabsTrigger value="comments">التعليقات</TabsTrigger>
             <TabsTrigger value="activity">سجل النشاط</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="changes">
+            <ChangeRequestsPanel requestId={id} />
+          </TabsContent>
 
           {canSeeCosts ? (
             <TabsContent value="costing" className="mt-4">
