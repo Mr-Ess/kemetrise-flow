@@ -135,6 +135,24 @@ function ControlTower() {
         subtitle="أين تتعطل دورة العمل الآن ومن يحتاج تدخلًا"
       />
 
+      <div className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-3">
+        <KpiCard
+          label="خطوات تنفيذ متأخرة"
+          value={num(lateSteps.length)}
+          tone={lateSteps.length ? "danger" : "success"}
+        />
+        <KpiCard
+          label="دفعات بانتظار المراجعة"
+          value={num(pendingIntents.length)}
+          tone={pendingIntents.length ? "warning" : "success"}
+        />
+        <KpiCard
+          label="طلبات تعديل من العملاء"
+          value={num(openChanges.length)}
+          tone={openChanges.length ? "warning" : "success"}
+        />
+      </div>
+
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <KpiCard label="تسعير متأخر" value={num(lateCosting.length)} tone="danger" />
         <KpiCard label="اعتماد متأخر" value={num(lateApproval.length)} tone="danger" />
