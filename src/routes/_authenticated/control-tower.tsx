@@ -34,7 +34,8 @@ function ControlTower() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["control-tower"],
     queryFn: async () => {
-      const [requests, orders, financials, tasks, rules, activities] = await Promise.all([
+      const [requests, orders, financials, tasks, rules, activities, steps, intents, changes] =
+        await Promise.all([
         supabase
           .from("sales_requests")
           .select("id, code, title, status, updated_at, estimated_value, customers(full_name)"),
@@ -47,6 +48,19 @@ function ControlTower() {
           .select("id, action, description, created_at, entity_code")
           .order("created_at", { ascending: false })
           .limit(20),
+        supabase
+          .from("order_execution_steps")
+          .select("id, order_id, name, status, planned_end, delay_days")
+          .not("status", "in", "(done,skipped)"),
+        supabase
+          .from("payment_intents")
+          .select("id, code, order_id, amount, status, created_at")
+          .in("status", ["submitted", "under_review"]),
+        supabase
+          .from("quotation_change_requests")
+          .select("id, request_id, message, created_at, status")
+          .eq("status", "open")
+          .order("created_at", { ascending: false }),
       ]);
       if (requests.error) throw requests.error;
       return {
@@ -56,6 +70,9 @@ function ControlTower() {
         tasks: tasks.data ?? [],
         rules: rules.data,
         activities: activities.data ?? [],
+        steps: steps.data ?? [],
+        intents: intents.data ?? [],
+        changes: changes.data ?? [],
       };
     },
     refetchInterval: 120000,
@@ -99,6 +116,11 @@ function ControlTower() {
     (t) => t.due_date && t.due_date < today && t.status !== "completed",
   );
   const unpaid = data.financials.filter((f) => Number(f.remaining_amount ?? 0) > 0);
+  const orderName = (id: string) => data.orders.find((o) => o.id === id);
+  const lateSteps = data.steps.filter((s) => s.planned_end && s.planned_end < today);
+  const pendingIntents = data.intents;
+  const openChanges = data.changes;
+
 
   const groups = [
     { title: `تسعير متأخر (أكثر من ${costingSla} ساعة)`, rows: lateCosting },
@@ -112,6 +134,24 @@ function ControlTower() {
         title="برج التحكم الإداري"
         subtitle="أين تتعطل دورة العمل الآن ومن يحتاج تدخلًا"
       />
+
+      <div className="mb-3 grid grid-cols-2 gap-3 md:grid-cols-3">
+        <KpiCard
+          label="خطوات تنفيذ متأخرة"
+          value={num(lateSteps.length)}
+          tone={lateSteps.length ? "danger" : "success"}
+        />
+        <KpiCard
+          label="دفعات بانتظار المراجعة"
+          value={num(pendingIntents.length)}
+          tone={pendingIntents.length ? "warning" : "success"}
+        />
+        <KpiCard
+          label="طلبات تعديل من العملاء"
+          value={num(openChanges.length)}
+          tone={openChanges.length ? "warning" : "success"}
+        />
+      </div>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
         <KpiCard label="تسعير متأخر" value={num(lateCosting.length)} tone="danger" />
@@ -159,6 +199,81 @@ function ControlTower() {
             )}
           </SectionCard>
         ))}
+
+        <SectionCard title="خطوات تنفيذ متأخرة">
+          {lateSteps.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">كل خطوات التنفيذ في موعدها</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {lateSteps.map((s) => (
+                <li key={s.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium">{s.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      <span className="num">{orderName(s.order_id)?.code ?? ""}</span> · مخطط{" "}
+                      {s.planned_end}
+                      {Number(s.delay_days) > 0 ? ` · تأخير ${s.delay_days} يوم` : ""}
+                    </p>
+                  </div>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/orders/$id" params={{ id: s.order_id }}>
+                      فتح
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+
+        <SectionCard title="دفعات إلكترونية بانتظار المراجعة">
+          {pendingIntents.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">لا توجد دفعات معلّقة</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {pendingIntents.map((i) => (
+                <li key={i.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="num text-sm font-semibold">{egp(Number(i.amount))}</p>
+                    <p className="text-xs text-muted-foreground">
+                      <span className="num">{i.code}</span> ·{" "}
+                      {orderName(i.order_id)?.code ?? ""} · {formatDateTime(i.created_at)}
+                    </p>
+                  </div>
+                  <Button asChild size="sm" variant="outline">
+                    <Link to="/orders/$id" params={{ id: i.order_id }}>
+                      مراجعة
+                    </Link>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
+
+        <SectionCard title="طلبات تعديل من العملاء">
+          {openChanges.length === 0 ? (
+            <p className="py-6 text-center text-sm text-success">لا توجد طلبات تعديل مفتوحة</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {openChanges.map((c) => (
+                <li key={c.id} className="flex items-center justify-between gap-2 py-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm">{c.message}</p>
+                    <p className="text-xs text-muted-foreground">{formatDateTime(c.created_at)}</p>
+                  </div>
+                  {c.request_id ? (
+                    <Button asChild size="sm" variant="outline">
+                      <Link to="/requests/$id" params={{ id: c.request_id }}>
+                        فتح
+                      </Link>
+                    </Button>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          )}
+        </SectionCard>
 
         <SectionCard title="أوامر تجاوزت موعد التسليم">
           {lateOrders.length === 0 ? (

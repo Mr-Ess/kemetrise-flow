@@ -101,6 +101,30 @@ export const PAYMENT_METHODS: Record<string, string> = {
   other: "أخرى",
 };
 
+export const PAYMENT_INTENT_STATUS: Record<string, { label: string; tone: Tone }> = {
+  pending: { label: "بانتظار الدفع", tone: "neutral" },
+  submitted: { label: "بانتظار المراجعة", tone: "warning" },
+  under_review: { label: "قيد المراجعة", tone: "info" },
+  confirmed: { label: "مؤكدة", tone: "success" },
+  rejected: { label: "مرفوضة", tone: "danger" },
+  cancelled: { label: "ملغاة", tone: "neutral" },
+};
+
+export const EXEC_STEP_STATUS: Record<string, { label: string; tone: Tone }> = {
+  pending: { label: "لم تبدأ", tone: "neutral" },
+  in_progress: { label: "جارية", tone: "info" },
+  blocked: { label: "متوقفة", tone: "danger" },
+  done: { label: "منتهية", tone: "success" },
+  skipped: { label: "متخطاة", tone: "neutral" },
+};
+
+export const CHANGE_REQUEST_STATUS: Record<string, { label: string; tone: Tone }> = {
+  open: { label: "جديد", tone: "warning" },
+  in_review: { label: "قيد الدراسة", tone: "info" },
+  accepted: { label: "تم القبول", tone: "success" },
+  rejected: { label: "مرفوض", tone: "danger" },
+};
+
 export const DOCUMENT_STATUS: Record<string, { label: string; tone: Tone }> = {
   required: { label: "مطلوب", tone: "warning" },
   requested: { label: "تم الطلب", tone: "info" },

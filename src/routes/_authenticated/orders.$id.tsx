@@ -21,6 +21,9 @@ import {
 } from "@/components/ui-kit";
 import { CommentsPanel } from "@/components/CommentsPanel";
 import { ActivityFeed } from "@/components/ActivityFeed";
+import { OrderExecutionPanel } from "@/components/OrderExecutionPanel";
+import { OnlinePaymentsPanel } from "@/components/OnlinePaymentsPanel";
+import { PortalLinkButton } from "@/components/PortalLinkButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -250,6 +253,7 @@ function OrderDetail() {
                 </Link>
               </Button>
             ) : null}
+            <PortalLinkButton customerId={o.customer_id} orderId={id} />
             <Button size="sm" onClick={() => setPayOpen(true)}>
               <Plus className="size-4" />
               تسجيل دفعة
@@ -393,14 +397,30 @@ function OrderDetail() {
       </div>
 
       <div className="mt-4">
-        <Tabs defaultValue="payments">
-          <TabsList className="flex-wrap">
+        <Tabs defaultValue="execution">
+          <TabsList>
+            <TabsTrigger value="execution">التنفيذ</TabsTrigger>
+            <TabsTrigger value="online">الدفع الإلكتروني</TabsTrigger>
             <TabsTrigger value="payments">المدفوعات</TabsTrigger>
             <TabsTrigger value="comments">التعليقات</TabsTrigger>
             <TabsTrigger value="activity">سجل النشاط</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="payments" className="mt-4">
+          <TabsContent value="execution">
+            <OrderExecutionPanel orderId={id} orderCode={o.code} canEdit={canEdit} />
+          </TabsContent>
+
+          <TabsContent value="online">
+            <OnlinePaymentsPanel
+              orderId={id}
+              orderCode={o.code}
+              customerId={o.customer_id}
+              remaining={remaining}
+              canEdit={canEdit}
+            />
+          </TabsContent>
+
+          <TabsContent value="payments">
             <SectionCard title="سجل المدفوعات">
               {data!.payments.length === 0 ? (
                 <EmptyState title="لا توجد دفعات مسجلة" />

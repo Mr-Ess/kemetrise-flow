@@ -189,6 +189,32 @@ export type Database = {
           },
         ]
       }
+      customer_users: {
+        Row: {
+          created_at: string
+          customer_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "customer_users_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           address: string | null
@@ -375,6 +401,139 @@ export type Database = {
         }
         Relationships: []
       }
+      order_daily_logs: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          delay_days: number
+          delay_reason: string | null
+          hours: number
+          id: string
+          is_customer_visible: boolean
+          log_date: string
+          order_id: string
+          progress_note: string
+          step_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          delay_days?: number
+          delay_reason?: string | null
+          hours?: number
+          id?: string
+          is_customer_visible?: boolean
+          log_date?: string
+          order_id: string
+          progress_note: string
+          step_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          delay_days?: number
+          delay_reason?: string | null
+          hours?: number
+          id?: string
+          is_customer_visible?: boolean
+          log_date?: string
+          order_id?: string
+          progress_note?: string
+          step_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_daily_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "order_financials"
+            referencedColumns: ["order_id"]
+          },
+          {
+            foreignKeyName: "order_daily_logs_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_daily_logs_step_id_fkey"
+            columns: ["step_id"]
+            isOneToOne: false
+            referencedRelation: "order_execution_steps"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_execution_steps: {
+        Row: {
+          actual_end: string | null
+          actual_start: string | null
+          assigned_to: string | null
+          created_at: string
+          delay_days: number
+          delay_reason: string | null
+          id: string
+          name: string
+          notes: string | null
+          order_id: string
+          planned_end: string | null
+          planned_start: string | null
+          seq: number
+          status: Database["public"]["Enums"]["exec_step_status"]
+          updated_at: string
+        }
+        Insert: {
+          actual_end?: string | null
+          actual_start?: string | null
+          assigned_to?: string | null
+          created_at?: string
+          delay_days?: number
+          delay_reason?: string | null
+          id?: string
+          name: string
+          notes?: string | null
+          order_id: string
+          planned_end?: string | null
+          planned_start?: string | null
+          seq?: number
+          status?: Database["public"]["Enums"]["exec_step_status"]
+          updated_at?: string
+        }
+        Update: {
+          actual_end?: string | null
+          actual_start?: string | null
+          assigned_to?: string | null
+          created_at?: string
+          delay_days?: number
+          delay_reason?: string | null
+          id?: string
+          name?: string
+          notes?: string | null
+          order_id?: string
+          planned_end?: string | null
+          planned_start?: string | null
+          seq?: number
+          status?: Database["public"]["Enums"]["exec_step_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_execution_steps_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "order_financials"
+            referencedColumns: ["order_id"]
+          },
+          {
+            foreignKeyName: "order_execution_steps_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           actual_delivery: string | null
@@ -463,6 +622,155 @@ export type Database = {
           },
         ]
       }
+      payment_gateways: {
+        Row: {
+          account_ref: string | null
+          auto_confirm: boolean
+          created_at: string
+          id: string
+          instructions: string | null
+          is_active: boolean
+          key: string
+          method: Database["public"]["Enums"]["payment_method"]
+          mode: string
+          name: string
+          requires_receipt: boolean
+          requires_reference: boolean
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          account_ref?: string | null
+          auto_confirm?: boolean
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          key: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          mode?: string
+          name: string
+          requires_receipt?: boolean
+          requires_reference?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          account_ref?: string | null
+          auto_confirm?: boolean
+          created_at?: string
+          id?: string
+          instructions?: string | null
+          is_active?: boolean
+          key?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          mode?: string
+          name?: string
+          requires_receipt?: boolean
+          requires_reference?: boolean
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      payment_intents: {
+        Row: {
+          amount: number
+          code: string
+          created_at: string
+          created_by: string | null
+          customer_id: string
+          gateway_key: string
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          note: string | null
+          order_id: string
+          payer_name: string | null
+          payment_id: string | null
+          receipt_path: string | null
+          reference: string | null
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source: string
+          status: Database["public"]["Enums"]["payment_intent_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id: string
+          gateway_key: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          note?: string | null
+          order_id: string
+          payer_name?: string | null
+          payment_id?: string | null
+          receipt_path?: string | null
+          reference?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: Database["public"]["Enums"]["payment_intent_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string
+          gateway_key?: string
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          note?: string | null
+          order_id?: string
+          payer_name?: string | null
+          payment_id?: string | null
+          receipt_path?: string | null
+          reference?: string | null
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source?: string
+          status?: Database["public"]["Enums"]["payment_intent_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_intents_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_intents_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "order_financials"
+            referencedColumns: ["order_id"]
+          },
+          {
+            foreignKeyName: "payment_intents_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_intents_payment_id_fkey"
+            columns: ["payment_id"]
+            isOneToOne: false
+            referencedRelation: "payments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       payments: {
         Row: {
           amount: number
@@ -529,6 +837,77 @@ export type Database = {
             columns: ["order_id"]
             isOneToOne: false
             referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portal_links: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string | null
+          customer_id: string
+          expires_at: string | null
+          id: string
+          is_active: boolean
+          last_seen_at: string | null
+          order_id: string | null
+          request_id: string | null
+          token: string
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          last_seen_at?: string | null
+          order_id?: string | null
+          request_id?: string | null
+          token: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean
+          last_seen_at?: string | null
+          order_id?: string | null
+          request_id?: string | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portal_links_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portal_links_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "order_financials"
+            referencedColumns: ["order_id"]
+          },
+          {
+            foreignKeyName: "portal_links_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "portal_links_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "sales_requests"
             referencedColumns: ["id"]
           },
         ]
@@ -652,6 +1031,76 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      quotation_change_requests: {
+        Row: {
+          created_at: string
+          customer_id: string
+          id: string
+          message: string
+          quotation_id: string
+          request_id: string | null
+          requested_delivery_days: number | null
+          requested_price: number | null
+          resolved_at: string | null
+          resolved_by: string | null
+          response: string | null
+          status: Database["public"]["Enums"]["change_request_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id: string
+          id?: string
+          message: string
+          quotation_id: string
+          request_id?: string | null
+          requested_delivery_days?: number | null
+          requested_price?: number | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          response?: string | null
+          status?: Database["public"]["Enums"]["change_request_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string
+          id?: string
+          message?: string
+          quotation_id?: string
+          request_id?: string | null
+          requested_delivery_days?: number | null
+          requested_price?: number | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          response?: string | null
+          status?: Database["public"]["Enums"]["change_request_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotation_change_requests_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotation_change_requests_quotation_id_fkey"
+            columns: ["quotation_id"]
+            isOneToOne: false
+            referencedRelation: "quotations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotation_change_requests_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "sales_requests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       quotations: {
         Row: {
@@ -1038,10 +1487,12 @@ export type Database = {
         Returns: boolean
       }
       is_manager: { Args: never; Returns: boolean }
+      is_staff: { Args: never; Returns: boolean }
       next_code: { Args: { prefix: string; seq: string }; Returns: string }
     }
     Enums: {
       app_role: "admin" | "management" | "sales" | "costing" | "staff"
+      change_request_status: "open" | "in_review" | "accepted" | "rejected"
       cost_category:
         | "raw_materials"
         | "labor"
@@ -1064,6 +1515,12 @@ export type Database = {
         | "verified"
         | "rejected"
         | "missing"
+      exec_step_status:
+        | "pending"
+        | "in_progress"
+        | "blocked"
+        | "done"
+        | "skipped"
       lead_source:
         | "facebook"
         | "instagram"
@@ -1094,6 +1551,13 @@ export type Database = {
         | "delivered"
         | "completed"
         | "on_hold"
+        | "cancelled"
+      payment_intent_status:
+        | "pending"
+        | "submitted"
+        | "under_review"
+        | "confirmed"
+        | "rejected"
         | "cancelled"
       payment_method:
         | "cash"
@@ -1259,6 +1723,7 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "management", "sales", "costing", "staff"],
+      change_request_status: ["open", "in_review", "accepted", "rejected"],
       cost_category: [
         "raw_materials",
         "labor",
@@ -1283,6 +1748,13 @@ export const Constants = {
         "verified",
         "rejected",
         "missing",
+      ],
+      exec_step_status: [
+        "pending",
+        "in_progress",
+        "blocked",
+        "done",
+        "skipped",
       ],
       lead_source: [
         "facebook",
@@ -1316,6 +1788,14 @@ export const Constants = {
         "delivered",
         "completed",
         "on_hold",
+        "cancelled",
+      ],
+      payment_intent_status: [
+        "pending",
+        "submitted",
+        "under_review",
+        "confirmed",
+        "rejected",
         "cancelled",
       ],
       payment_method: [
