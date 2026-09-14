@@ -22,6 +22,8 @@ import { CostingPanel } from "@/components/CostingPanel";
 import { CommentsPanel } from "@/components/CommentsPanel";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { AttachmentsPanel } from "@/components/AttachmentsPanel";
+import { ChangeRequestsPanel } from "@/components/ChangeRequestsPanel";
+import { PortalLinkButton } from "@/components/PortalLinkButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -477,6 +479,7 @@ function RequestDetail() {
                 كل الطلبات
               </Link>
             </Button>
+            <PortalLinkButton customerId={r.customer_id} requestId={id} />
             {data?.order ? (
               <Button asChild size="sm">
                 <Link to="/orders/$id" params={{ id: data.order.id }}>
@@ -579,12 +582,17 @@ function RequestDetail() {
 
       <div className="mt-4">
         <Tabs defaultValue={canSeeCosts ? "costing" : "quotations"}>
-          <TabsList className="flex-wrap">
+          <TabsList>
             {canSeeCosts ? <TabsTrigger value="costing">التسعير الداخلي</TabsTrigger> : null}
             <TabsTrigger value="quotations">عروض الأسعار</TabsTrigger>
+            <TabsTrigger value="changes">طلبات التعديل</TabsTrigger>
             <TabsTrigger value="comments">التعليقات</TabsTrigger>
             <TabsTrigger value="activity">سجل النشاط</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="changes">
+            <ChangeRequestsPanel requestId={id} />
+          </TabsContent>
 
           {canSeeCosts ? (
             <TabsContent value="costing" className="mt-4">

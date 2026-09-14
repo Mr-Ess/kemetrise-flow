@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { ROLE_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format";
+import { PaymentGatewaysCard } from "@/components/PaymentGatewaysCard";
 import {
   EmptyState,
   ErrorState,
@@ -182,6 +183,8 @@ function SettingsPage() {
           </div>
         </SectionCard>
       ) : null}
+
+      <PaymentGatewaysCard />
 
       {isAdmin ? (
         <SectionCard title="فريق العمل والصلاحيات">

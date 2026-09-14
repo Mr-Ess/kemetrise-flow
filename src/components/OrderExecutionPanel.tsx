@@ -78,7 +78,11 @@ export function OrderExecutionPanel({
   };
 
   const updateStep = useMutation({
-    mutationFn: async (input: { id: string; patch: Record<string, unknown>; label?: string }) => {
+    mutationFn: async (input: {
+      id: string;
+      patch: Partial<Database["public"]["Tables"]["order_execution_steps"]["Update"]>;
+      label?: string;
+    }) => {
       const { error } = await supabase
         .from("order_execution_steps")
         .update(input.patch)
