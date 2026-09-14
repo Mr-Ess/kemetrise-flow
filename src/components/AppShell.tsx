@@ -7,6 +7,7 @@ import {
   ClipboardList,
   FileText,
   Gauge,
+  Globe,
   LayoutDashboard,
   ListChecks,
   LogOut,
@@ -69,6 +70,17 @@ const NAV: NavGroup[] = [
       { to: "/payments", label: "المدفوعات", icon: Receipt },
       { to: "/documents", label: "المستندات", icon: FileText },
       { to: "/catalog", label: "المنتجات والخدمات", icon: Package },
+    ],
+  },
+  {
+    title: "الموقع العام",
+    items: [
+      {
+        to: "/website",
+        label: "المحتوى والرسائل",
+        icon: Globe,
+        roles: ["admin", "management", "sales"],
+      },
     ],
   },
   {

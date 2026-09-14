@@ -26,6 +26,7 @@ import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
+import { Route as AuthenticatedWebsiteRouteImport } from './routes/_authenticated/website'
 import { Route as SiteIndexRouteImport } from './routes/_site/index'
 import { Route as SiteAboutRouteImport } from './routes/_site/about'
 import { Route as SiteContactRouteImport } from './routes/_site/contact'
@@ -132,6 +133,11 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
 const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedWebsiteRoute = AuthenticatedWebsiteRouteImport.update({
+  id: '/website',
+  path: '/website',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const SiteIndexRoute = SiteIndexRouteImport.update({
@@ -267,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/website': typeof AuthenticatedWebsiteRoute
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/our-agents': typeof SiteOurAgentsRoute
@@ -306,6 +313,7 @@ export interface FileRoutesByTo {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/website': typeof AuthenticatedWebsiteRoute
   '/about': typeof SiteAboutRoute
   '/contact': typeof SiteContactRoute
   '/our-agents': typeof SiteOurAgentsRoute
@@ -347,6 +355,7 @@ export interface FileRoutesById {
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
+  '/_authenticated/website': typeof AuthenticatedWebsiteRoute
   '/_site/about': typeof SiteAboutRoute
   '/_site/contact': typeof SiteContactRoute
   '/_site/our-agents': typeof SiteOurAgentsRoute
@@ -389,6 +398,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/website'
     | '/about'
     | '/contact'
     | '/our-agents'
@@ -428,6 +438,7 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/website'
     | '/about'
     | '/contact'
     | '/our-agents'
@@ -468,6 +479,7 @@ export interface FileRouteTypes {
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/_authenticated/tasks'
+    | '/_authenticated/website'
     | '/_site/about'
     | '/_site/contact'
     | '/_site/our-agents'
@@ -619,6 +631,13 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/tasks'
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/website': {
+      id: '/_authenticated/website'
+      path: '/website'
+      fullPath: '/website'
+      preLoaderRoute: typeof AuthenticatedWebsiteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_site/': {
@@ -793,6 +812,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTasksRoute: typeof AuthenticatedTasksRoute
+  AuthenticatedWebsiteRoute: typeof AuthenticatedWebsiteRoute
   AuthenticatedCustomersIdRoute: typeof AuthenticatedCustomersIdRoute
   AuthenticatedOrdersIdRoute: typeof AuthenticatedOrdersIdRoute
   AuthenticatedRequestsIdRoute: typeof AuthenticatedRequestsIdRoute
@@ -817,6 +837,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTasksRoute: AuthenticatedTasksRoute,
+  AuthenticatedWebsiteRoute: AuthenticatedWebsiteRoute,
   AuthenticatedCustomersIdRoute: AuthenticatedCustomersIdRoute,
   AuthenticatedOrdersIdRoute: AuthenticatedOrdersIdRoute,
   AuthenticatedRequestsIdRoute: AuthenticatedRequestsIdRoute,
