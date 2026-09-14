@@ -34,7 +34,8 @@ function ControlTower() {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["control-tower"],
     queryFn: async () => {
-      const [requests, orders, financials, tasks, rules, activities] = await Promise.all([
+      const [requests, orders, financials, tasks, rules, activities, steps, intents, changes] =
+        await Promise.all([
         supabase
           .from("sales_requests")
           .select("id, code, title, status, updated_at, estimated_value, customers(full_name)"),
