@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, Plus } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
@@ -21,6 +21,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { SalesRequestForm } from "@/components/SalesRequestForm";
 
 export const Route = createFileRoute("/portal/")({
   ssr: false,
@@ -188,6 +196,7 @@ function PortalAuth() {
 
 function PortalDashboard() {
   const queryClient = useQueryClient();
+  const [newOpen, setNewOpen] = useState(false);
   const claim = useServerFn(portalClaimAccount);
   const load = useServerFn(portalLoadMine);
   const change = useServerFn(portalChangeMine);
@@ -243,6 +252,37 @@ function PortalDashboard() {
     </Button>
   );
 
+  const customer = (data as { customer?: { id: string; full_name?: string | null; phone?: string | null; email?: string | null } } | undefined)?.customer;
+
+  const headerActions = (
+    <div className="flex items-center gap-2">
+      {customer ? (
+        <Dialog open={newOpen} onOpenChange={setNewOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus className="size-4" />
+              طلب جديد
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>طلب جديد</DialogTitle>
+            </DialogHeader>
+            <SalesRequestForm
+              mode="portal"
+              customerId={customer.id}
+              customer={customer}
+              originPage="/portal"
+              sourceDetail="customer_portal"
+              onDone={refresh}
+            />
+          </DialogContent>
+        </Dialog>
+      ) : null}
+      {logoutBtn}
+    </div>
+  );
+
   if (isLoading)
     return (
       <div className="mx-auto w-full max-w-5xl px-4 py-10">
@@ -265,7 +305,7 @@ function PortalDashboard() {
     <CustomerPortalView
       data={data}
       busy={changeM.isPending || acceptM.isPending || payM.isPending}
-      headerExtra={logoutBtn}
+      headerExtra={headerActions}
       onChangeRequest={(input) => changeM.mutateAsync(input)}
       onAccept={(quotationId) => acceptM.mutateAsync(quotationId)}
       onPay={(input) => payM.mutateAsync(input)}
