@@ -9,8 +9,8 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as SiteRouteImport } from './routes/_site'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedApprovalsRouteImport } from './routes/_authenticated/approvals'
 import { Route as AuthenticatedCatalogRouteImport } from './routes/_authenticated/catalog'
@@ -26,6 +26,17 @@ import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
+import { Route as SiteIndexRouteImport } from './routes/_site/index'
+import { Route as SiteAboutRouteImport } from './routes/_site/about'
+import { Route as SiteContactRouteImport } from './routes/_site/contact'
+import { Route as SiteOurAgentsRouteImport } from './routes/_site/our-agents'
+import { Route as SiteOurProjectsRouteImport } from './routes/_site/our-projects'
+import { Route as SitePartnersRouteImport } from './routes/_site/partners'
+import { Route as SitePlansRouteImport } from './routes/_site/plans'
+import { Route as SitePortfolioRouteImport } from './routes/_site/portfolio'
+import { Route as SiteProductsRouteImport } from './routes/_site/products'
+import { Route as SiteRequestRouteImport } from './routes/_site/request'
+import { Route as SiteServicesRouteImport } from './routes/_site/services'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as PortalTokenRouteImport } from './routes/portal.$token'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers.index'
@@ -35,14 +46,15 @@ import { Route as AuthenticatedOrdersIdRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedRequestsIndexRouteImport } from './routes/_authenticated/requests.index'
 import { Route as AuthenticatedRequestsIdRouteImport } from './routes/_authenticated/requests.$id'
 import { Route as AuthenticatedRequestsNewRouteImport } from './routes/_authenticated/requests.new'
+import { Route as SiteNewsIndexRouteImport } from './routes/_site/news.index'
+import { Route as SiteNewsSlugRouteImport } from './routes/_site/news.$slug'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SiteRoute = SiteRouteImport.update({
+  id: '/_site',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -122,6 +134,61 @@ const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const SiteIndexRoute = SiteIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteAboutRoute = SiteAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteContactRoute = SiteContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteOurAgentsRoute = SiteOurAgentsRouteImport.update({
+  id: '/our-agents',
+  path: '/our-agents',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteOurProjectsRoute = SiteOurProjectsRouteImport.update({
+  id: '/our-projects',
+  path: '/our-projects',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePartnersRoute = SitePartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePlansRoute = SitePlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePortfolioRoute = SitePortfolioRouteImport.update({
+  id: '/portfolio',
+  path: '/portfolio',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteProductsRoute = SiteProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteRequestRoute = SiteRequestRouteImport.update({
+  id: '/request',
+  path: '/request',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteServicesRoute = SiteServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => SiteRoute,
+} as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
   id: '/portal/',
   path: '/portal/',
@@ -172,9 +239,19 @@ const AuthenticatedRequestsNewRoute =
     path: '/requests/new',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const SiteNewsIndexRoute = SiteNewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteNewsSlugRoute = SiteNewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
+  getParentRoute: () => SiteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
   '/catalog': typeof AuthenticatedCatalogRoute
@@ -190,18 +267,30 @@ export interface FileRoutesByFullPath {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/about': typeof SiteAboutRoute
+  '/contact': typeof SiteContactRoute
+  '/our-agents': typeof SiteOurAgentsRoute
+  '/our-projects': typeof SiteOurProjectsRoute
+  '/partners': typeof SitePartnersRoute
+  '/plans': typeof SitePlansRoute
+  '/portfolio': typeof SitePortfolioRoute
+  '/products': typeof SiteProductsRoute
+  '/request': typeof SiteRequestRoute
+  '/services': typeof SiteServicesRoute
   '/portal/$token': typeof PortalTokenRoute
   '/portal/': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/requests/new': typeof AuthenticatedRequestsNewRoute
+  '/news/$slug': typeof SiteNewsSlugRoute
   '/customers/': typeof AuthenticatedCustomersIndexRoute
   '/orders/': typeof AuthenticatedOrdersIndexRoute
   '/requests/': typeof AuthenticatedRequestsIndexRoute
+  '/news/': typeof SiteNewsIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/': typeof SiteIndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
   '/catalog': typeof AuthenticatedCatalogRoute
@@ -217,20 +306,32 @@ export interface FileRoutesByTo {
   '/search': typeof AuthenticatedSearchRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
+  '/about': typeof SiteAboutRoute
+  '/contact': typeof SiteContactRoute
+  '/our-agents': typeof SiteOurAgentsRoute
+  '/our-projects': typeof SiteOurProjectsRoute
+  '/partners': typeof SitePartnersRoute
+  '/plans': typeof SitePlansRoute
+  '/portfolio': typeof SitePortfolioRoute
+  '/products': typeof SiteProductsRoute
+  '/request': typeof SiteRequestRoute
+  '/services': typeof SiteServicesRoute
   '/portal/$token': typeof PortalTokenRoute
   '/portal': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/requests/new': typeof AuthenticatedRequestsNewRoute
+  '/news/$slug': typeof SiteNewsSlugRoute
   '/customers': typeof AuthenticatedCustomersIndexRoute
   '/orders': typeof AuthenticatedOrdersIndexRoute
   '/requests': typeof AuthenticatedRequestsIndexRoute
+  '/news': typeof SiteNewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/_site': typeof SiteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/approvals': typeof AuthenticatedApprovalsRoute
   '/_authenticated/catalog': typeof AuthenticatedCatalogRoute
@@ -246,15 +347,28 @@ export interface FileRoutesById {
   '/_authenticated/search': typeof AuthenticatedSearchRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
+  '/_site/about': typeof SiteAboutRoute
+  '/_site/contact': typeof SiteContactRoute
+  '/_site/our-agents': typeof SiteOurAgentsRoute
+  '/_site/our-projects': typeof SiteOurProjectsRoute
+  '/_site/partners': typeof SitePartnersRoute
+  '/_site/plans': typeof SitePlansRoute
+  '/_site/portfolio': typeof SitePortfolioRoute
+  '/_site/products': typeof SiteProductsRoute
+  '/_site/request': typeof SiteRequestRoute
+  '/_site/services': typeof SiteServicesRoute
   '/portal/$token': typeof PortalTokenRoute
+  '/_site/': typeof SiteIndexRoute
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/_authenticated/orders/$id': typeof AuthenticatedOrdersIdRoute
   '/_authenticated/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/_authenticated/requests/new': typeof AuthenticatedRequestsNewRoute
+  '/_site/news/$slug': typeof SiteNewsSlugRoute
   '/_authenticated/customers/': typeof AuthenticatedCustomersIndexRoute
   '/_authenticated/orders/': typeof AuthenticatedOrdersIndexRoute
   '/_authenticated/requests/': typeof AuthenticatedRequestsIndexRoute
+  '/_site/news/': typeof SiteNewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -275,15 +389,27 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/about'
+    | '/contact'
+    | '/our-agents'
+    | '/our-projects'
+    | '/partners'
+    | '/plans'
+    | '/portfolio'
+    | '/products'
+    | '/request'
+    | '/services'
     | '/portal/$token'
     | '/portal/'
     | '/customers/$id'
     | '/orders/$id'
     | '/requests/$id'
     | '/requests/new'
+    | '/news/$slug'
     | '/customers/'
     | '/orders/'
     | '/requests/'
+    | '/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -302,19 +428,31 @@ export interface FileRouteTypes {
     | '/search'
     | '/settings'
     | '/tasks'
+    | '/about'
+    | '/contact'
+    | '/our-agents'
+    | '/our-projects'
+    | '/partners'
+    | '/plans'
+    | '/portfolio'
+    | '/products'
+    | '/request'
+    | '/services'
     | '/portal/$token'
     | '/portal'
     | '/customers/$id'
     | '/orders/$id'
     | '/requests/$id'
     | '/requests/new'
+    | '/news/$slug'
     | '/customers'
     | '/orders'
     | '/requests'
+    | '/news'
   id:
     | '__root__'
-    | '/'
     | '/_authenticated'
+    | '/_site'
     | '/auth'
     | '/_authenticated/approvals'
     | '/_authenticated/catalog'
@@ -330,20 +468,33 @@ export interface FileRouteTypes {
     | '/_authenticated/search'
     | '/_authenticated/settings'
     | '/_authenticated/tasks'
+    | '/_site/about'
+    | '/_site/contact'
+    | '/_site/our-agents'
+    | '/_site/our-projects'
+    | '/_site/partners'
+    | '/_site/plans'
+    | '/_site/portfolio'
+    | '/_site/products'
+    | '/_site/request'
+    | '/_site/services'
     | '/portal/$token'
+    | '/_site/'
     | '/portal/'
     | '/_authenticated/customers/$id'
     | '/_authenticated/orders/$id'
     | '/_authenticated/requests/$id'
     | '/_authenticated/requests/new'
+    | '/_site/news/$slug'
     | '/_authenticated/customers/'
     | '/_authenticated/orders/'
     | '/_authenticated/requests/'
+    | '/_site/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  SiteRoute: typeof SiteRouteWithChildren
   AuthRoute: typeof AuthRoute
   PortalTokenRoute: typeof PortalTokenRoute
   PortalIndexRoute: typeof PortalIndexRoute
@@ -351,18 +502,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_site': {
+      id: '/_site'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SiteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -470,6 +621,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_site/': {
+      id: '/_site/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof SiteIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/about': {
+      id: '/_site/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof SiteAboutRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/contact': {
+      id: '/_site/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof SiteContactRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/our-agents': {
+      id: '/_site/our-agents'
+      path: '/our-agents'
+      fullPath: '/our-agents'
+      preLoaderRoute: typeof SiteOurAgentsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/our-projects': {
+      id: '/_site/our-projects'
+      path: '/our-projects'
+      fullPath: '/our-projects'
+      preLoaderRoute: typeof SiteOurProjectsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/partners': {
+      id: '/_site/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof SitePartnersRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/plans': {
+      id: '/_site/plans'
+      path: '/plans'
+      fullPath: '/plans'
+      preLoaderRoute: typeof SitePlansRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/portfolio': {
+      id: '/_site/portfolio'
+      path: '/portfolio'
+      fullPath: '/portfolio'
+      preLoaderRoute: typeof SitePortfolioRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/products': {
+      id: '/_site/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof SiteProductsRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/request': {
+      id: '/_site/request'
+      path: '/request'
+      fullPath: '/request'
+      preLoaderRoute: typeof SiteRequestRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/services': {
+      id: '/_site/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof SiteServicesRouteImport
+      parentRoute: typeof SiteRoute
+    }
     '/portal/': {
       id: '/portal/'
       path: '/portal'
@@ -533,6 +761,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestsNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_site/news/': {
+      id: '/_site/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof SiteNewsIndexRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/news/$slug': {
+      id: '/_site/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof SiteNewsSlugRouteImport
+      parentRoute: typeof SiteRoute
+    }
   }
 }
 
@@ -587,9 +829,43 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface SiteRouteChildren {
+  SiteAboutRoute: typeof SiteAboutRoute
+  SiteContactRoute: typeof SiteContactRoute
+  SiteOurAgentsRoute: typeof SiteOurAgentsRoute
+  SiteOurProjectsRoute: typeof SiteOurProjectsRoute
+  SitePartnersRoute: typeof SitePartnersRoute
+  SitePlansRoute: typeof SitePlansRoute
+  SitePortfolioRoute: typeof SitePortfolioRoute
+  SiteProductsRoute: typeof SiteProductsRoute
+  SiteRequestRoute: typeof SiteRequestRoute
+  SiteServicesRoute: typeof SiteServicesRoute
+  SiteIndexRoute: typeof SiteIndexRoute
+  SiteNewsSlugRoute: typeof SiteNewsSlugRoute
+  SiteNewsIndexRoute: typeof SiteNewsIndexRoute
+}
+
+const SiteRouteChildren: SiteRouteChildren = {
+  SiteAboutRoute: SiteAboutRoute,
+  SiteContactRoute: SiteContactRoute,
+  SiteOurAgentsRoute: SiteOurAgentsRoute,
+  SiteOurProjectsRoute: SiteOurProjectsRoute,
+  SitePartnersRoute: SitePartnersRoute,
+  SitePlansRoute: SitePlansRoute,
+  SitePortfolioRoute: SitePortfolioRoute,
+  SiteProductsRoute: SiteProductsRoute,
+  SiteRequestRoute: SiteRequestRoute,
+  SiteServicesRoute: SiteServicesRoute,
+  SiteIndexRoute: SiteIndexRoute,
+  SiteNewsSlugRoute: SiteNewsSlugRoute,
+  SiteNewsIndexRoute: SiteNewsIndexRoute,
+}
+
+const SiteRouteWithChildren = SiteRoute._addFileChildren(SiteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  SiteRoute: SiteRouteWithChildren,
   AuthRoute: AuthRoute,
   PortalTokenRoute: PortalTokenRoute,
   PortalIndexRoute: PortalIndexRoute,
