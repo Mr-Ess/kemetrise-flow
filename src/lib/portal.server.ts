@@ -30,14 +30,21 @@ export async function resolveToken(token: string): Promise<PortalScope> {
   return scope;
 }
 
-export async function resolveUser(userId: string): Promise<PortalScope> {
+/** Returns the portal scope for a signed-in customer account, or null when unlinked. */
+export async function resolveUserOptional(userId: string): Promise<PortalScope | null> {
   const { data } = await supabaseAdmin
     .from("customer_users")
     .select("customer_id")
     .eq("user_id", userId)
     .maybeSingle();
-  if (!data) throw new Error("هذا الحساب غير مرتبط بأي ملف عميل");
+  if (!data) return null;
   return { customerId: data.customer_id, requestId: null, orderId: null, lastSeen: null };
+}
+
+export async function resolveUser(userId: string): Promise<PortalScope> {
+  const scope = await resolveUserOptional(userId);
+  if (!scope) throw new Error("هذا الحساب غير مرتبط بأي ملف عميل");
+  return scope;
 }
 
 /** Links a signed-in customer account to a customer record by matching email. */
