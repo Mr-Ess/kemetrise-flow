@@ -69,7 +69,9 @@ export const portalLoadMine = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const m = await import("./portal.server");
-    return m.loadPortal(await m.resolveUser(context.userId));
+    const scope = await m.resolveUserOptional(context.userId);
+    if (!scope) return null;
+    return m.loadPortal(scope);
   });
 
 export const portalChangeMine = createServerFn({ method: "POST" })
