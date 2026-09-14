@@ -397,14 +397,30 @@ function OrderDetail() {
       </div>
 
       <div className="mt-4">
-        <Tabs defaultValue="payments">
-          <TabsList className="flex-wrap">
+        <Tabs defaultValue="execution">
+          <TabsList>
+            <TabsTrigger value="execution">التنفيذ</TabsTrigger>
+            <TabsTrigger value="online">الدفع الإلكتروني</TabsTrigger>
             <TabsTrigger value="payments">المدفوعات</TabsTrigger>
             <TabsTrigger value="comments">التعليقات</TabsTrigger>
             <TabsTrigger value="activity">سجل النشاط</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="payments" className="mt-4">
+          <TabsContent value="execution">
+            <OrderExecutionPanel orderId={id} orderCode={o.code} canEdit={canEdit} />
+          </TabsContent>
+
+          <TabsContent value="online">
+            <OnlinePaymentsPanel
+              orderId={id}
+              orderCode={o.code}
+              customerId={o.customer_id}
+              remaining={remaining}
+              canEdit={canEdit}
+            />
+          </TabsContent>
+
+          <TabsContent value="payments">
             <SectionCard title="سجل المدفوعات">
               {data!.payments.length === 0 ? (
                 <EmptyState title="لا توجد دفعات مسجلة" />
