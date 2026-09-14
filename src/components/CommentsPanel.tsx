@@ -76,7 +76,7 @@ export function CommentsPanel({
           <li key={c.id} className="rounded-lg border border-border bg-surface p-3">
             <div className="flex items-center justify-between gap-2">
               <p className="text-xs font-medium text-primary">
-                {(c.profiles as { full_name: string } | null)?.full_name ?? "مستخدم"}
+                {(c.profiles as unknown as { full_name: string } | null)?.full_name ?? "مستخدم"}
               </p>
               <span className="text-xs text-muted-foreground">{formatDateTime(c.created_at)}</span>
             </div>

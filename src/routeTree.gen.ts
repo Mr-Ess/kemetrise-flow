@@ -13,12 +13,18 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedApprovalsRouteImport } from './routes/_authenticated/approvals'
+import { Route as AuthenticatedCatalogRouteImport } from './routes/_authenticated/catalog'
+import { Route as AuthenticatedControlTowerRouteImport } from './routes/_authenticated/control-tower'
 import { Route as AuthenticatedCostingRouteImport } from './routes/_authenticated/costing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
+import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated/payments'
 import { Route as AuthenticatedPipelineRouteImport } from './routes/_authenticated/pipeline'
 import { Route as AuthenticatedQuotationsRouteImport } from './routes/_authenticated/quotations'
+import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
+import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers.index'
 import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
@@ -47,6 +53,17 @@ const AuthenticatedApprovalsRoute = AuthenticatedApprovalsRouteImport.update({
   path: '/approvals',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedCatalogRoute = AuthenticatedCatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedControlTowerRoute =
+  AuthenticatedControlTowerRouteImport.update({
+    id: '/control-tower',
+    path: '/control-tower',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedCostingRoute = AuthenticatedCostingRouteImport.update({
   id: '/costing',
   path: '/costing',
@@ -62,6 +79,12 @@ const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
   path: '/documents',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedNotificationsRoute =
+  AuthenticatedNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPaymentsRoute = AuthenticatedPaymentsRouteImport.update({
   id: '/payments',
   path: '/payments',
@@ -75,6 +98,21 @@ const AuthenticatedPipelineRoute = AuthenticatedPipelineRouteImport.update({
 const AuthenticatedQuotationsRoute = AuthenticatedQuotationsRouteImport.update({
   id: '/quotations',
   path: '/quotations',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsRoute = AuthenticatedReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
@@ -127,12 +165,18 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
+  '/control-tower': typeof AuthenticatedControlTowerRoute
   '/costing': typeof AuthenticatedCostingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/quotations': typeof AuthenticatedQuotationsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -146,12 +190,18 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
+  '/control-tower': typeof AuthenticatedControlTowerRoute
   '/costing': typeof AuthenticatedCostingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRoute
+  '/notifications': typeof AuthenticatedNotificationsRoute
   '/payments': typeof AuthenticatedPaymentsRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/quotations': typeof AuthenticatedQuotationsRoute
+  '/reports': typeof AuthenticatedReportsRoute
+  '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -167,12 +217,18 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/approvals': typeof AuthenticatedApprovalsRoute
+  '/_authenticated/catalog': typeof AuthenticatedCatalogRoute
+  '/_authenticated/control-tower': typeof AuthenticatedControlTowerRoute
   '/_authenticated/costing': typeof AuthenticatedCostingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
+  '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/pipeline': typeof AuthenticatedPipelineRoute
   '/_authenticated/quotations': typeof AuthenticatedQuotationsRoute
+  '/_authenticated/reports': typeof AuthenticatedReportsRoute
+  '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
   '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/_authenticated/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -188,12 +244,18 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/approvals'
+    | '/catalog'
+    | '/control-tower'
     | '/costing'
     | '/dashboard'
     | '/documents'
+    | '/notifications'
     | '/payments'
     | '/pipeline'
     | '/quotations'
+    | '/reports'
+    | '/search'
+    | '/settings'
     | '/tasks'
     | '/customers/$id'
     | '/orders/$id'
@@ -207,12 +269,18 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/approvals'
+    | '/catalog'
+    | '/control-tower'
     | '/costing'
     | '/dashboard'
     | '/documents'
+    | '/notifications'
     | '/payments'
     | '/pipeline'
     | '/quotations'
+    | '/reports'
+    | '/search'
+    | '/settings'
     | '/tasks'
     | '/customers/$id'
     | '/orders/$id'
@@ -227,12 +295,18 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/approvals'
+    | '/_authenticated/catalog'
+    | '/_authenticated/control-tower'
     | '/_authenticated/costing'
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
+    | '/_authenticated/notifications'
     | '/_authenticated/payments'
     | '/_authenticated/pipeline'
     | '/_authenticated/quotations'
+    | '/_authenticated/reports'
+    | '/_authenticated/search'
+    | '/_authenticated/settings'
     | '/_authenticated/tasks'
     | '/_authenticated/customers/$id'
     | '/_authenticated/orders/$id'
@@ -279,6 +353,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedApprovalsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/catalog': {
+      id: '/_authenticated/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof AuthenticatedCatalogRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/control-tower': {
+      id: '/_authenticated/control-tower'
+      path: '/control-tower'
+      fullPath: '/control-tower'
+      preLoaderRoute: typeof AuthenticatedControlTowerRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/costing': {
       id: '/_authenticated/costing'
       path: '/costing'
@@ -300,6 +388,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/notifications': {
+      id: '/_authenticated/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/payments': {
       id: '/_authenticated/payments'
       path: '/payments'
@@ -319,6 +414,27 @@ declare module '@tanstack/react-router' {
       path: '/quotations'
       fullPath: '/quotations'
       preLoaderRoute: typeof AuthenticatedQuotationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports': {
+      id: '/_authenticated/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AuthenticatedReportsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/search': {
+      id: '/_authenticated/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AuthenticatedSearchRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/tasks': {
@@ -382,12 +498,18 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedApprovalsRoute: typeof AuthenticatedApprovalsRoute
+  AuthenticatedCatalogRoute: typeof AuthenticatedCatalogRoute
+  AuthenticatedControlTowerRoute: typeof AuthenticatedControlTowerRoute
   AuthenticatedCostingRoute: typeof AuthenticatedCostingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
+  AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedPipelineRoute: typeof AuthenticatedPipelineRoute
   AuthenticatedQuotationsRoute: typeof AuthenticatedQuotationsRoute
+  AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
+  AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTasksRoute: typeof AuthenticatedTasksRoute
   AuthenticatedCustomersIdRoute: typeof AuthenticatedCustomersIdRoute
   AuthenticatedOrdersIdRoute: typeof AuthenticatedOrdersIdRoute
@@ -400,12 +522,18 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApprovalsRoute: AuthenticatedApprovalsRoute,
+  AuthenticatedCatalogRoute: AuthenticatedCatalogRoute,
+  AuthenticatedControlTowerRoute: AuthenticatedControlTowerRoute,
   AuthenticatedCostingRoute: AuthenticatedCostingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
+  AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedPipelineRoute: AuthenticatedPipelineRoute,
   AuthenticatedQuotationsRoute: AuthenticatedQuotationsRoute,
+  AuthenticatedReportsRoute: AuthenticatedReportsRoute,
+  AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTasksRoute: AuthenticatedTasksRoute,
   AuthenticatedCustomersIdRoute: AuthenticatedCustomersIdRoute,
   AuthenticatedOrdersIdRoute: AuthenticatedOrdersIdRoute,
