@@ -97,8 +97,14 @@ export function CustomerPortalView({
   async function submitPay() {
     if (!payFor) return;
     const amount = Number(pay.amount);
-    if (!pay.gateway) return toast.error("اختر طريقة الدفع");
-    if (!amount || amount <= 0) return toast.error("أدخل مبلغًا صحيحًا");
+    if (!pay.gateway) {
+      toast.error("اختر طريقة الدفع");
+      return;
+    }
+    if (!amount || amount <= 0) {
+      toast.error("أدخل مبلغًا صحيحًا");
+      return;
+    }
     await onPay({
       orderId: payFor.id,
       gatewayKey: pay.gateway,

@@ -55,7 +55,10 @@ export function PaymentGatewaysCard() {
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["payment-gateways"] });
 
   const update = useMutation({
-    mutationFn: async (input: { id: string; patch: Record<string, unknown> }) => {
+    mutationFn: async (input: {
+      id: string;
+      patch: Partial<Database["public"]["Tables"]["payment_gateways"]["Update"]>;
+    }) => {
       const { error } = await supabase
         .from("payment_gateways")
         .update(input.patch)
