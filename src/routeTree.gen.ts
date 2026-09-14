@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedApprovalsRouteImport } from './routes/_authenticated/approvals'
+import { Route as AuthenticatedCatalogRouteImport } from './routes/_authenticated/catalog'
 import { Route as AuthenticatedControlTowerRouteImport } from './routes/_authenticated/control-tower'
 import { Route as AuthenticatedCostingRouteImport } from './routes/_authenticated/costing'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -23,6 +24,7 @@ import { Route as AuthenticatedPipelineRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedQuotationsRouteImport } from './routes/_authenticated/quotations'
 import { Route as AuthenticatedReportsRouteImport } from './routes/_authenticated/reports'
 import { Route as AuthenticatedSearchRouteImport } from './routes/_authenticated/search'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers.index'
 import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
@@ -49,6 +51,11 @@ const AuthRoute = AuthRouteImport.update({
 const AuthenticatedApprovalsRoute = AuthenticatedApprovalsRouteImport.update({
   id: '/approvals',
   path: '/approvals',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCatalogRoute = AuthenticatedCatalogRouteImport.update({
+  id: '/catalog',
+  path: '/catalog',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedControlTowerRoute =
@@ -103,6 +110,11 @@ const AuthenticatedSearchRoute = AuthenticatedSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
@@ -153,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
   '/control-tower': typeof AuthenticatedControlTowerRoute
   '/costing': typeof AuthenticatedCostingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -163,6 +176,7 @@ export interface FileRoutesByFullPath {
   '/quotations': typeof AuthenticatedQuotationsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -176,6 +190,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/approvals': typeof AuthenticatedApprovalsRoute
+  '/catalog': typeof AuthenticatedCatalogRoute
   '/control-tower': typeof AuthenticatedControlTowerRoute
   '/costing': typeof AuthenticatedCostingRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -186,6 +201,7 @@ export interface FileRoutesByTo {
   '/quotations': typeof AuthenticatedQuotationsRoute
   '/reports': typeof AuthenticatedReportsRoute
   '/search': typeof AuthenticatedSearchRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -201,6 +217,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/approvals': typeof AuthenticatedApprovalsRoute
+  '/_authenticated/catalog': typeof AuthenticatedCatalogRoute
   '/_authenticated/control-tower': typeof AuthenticatedControlTowerRoute
   '/_authenticated/costing': typeof AuthenticatedCostingRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -211,6 +228,7 @@ export interface FileRoutesById {
   '/_authenticated/quotations': typeof AuthenticatedQuotationsRoute
   '/_authenticated/reports': typeof AuthenticatedReportsRoute
   '/_authenticated/search': typeof AuthenticatedSearchRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
   '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/_authenticated/orders/$id': typeof AuthenticatedOrdersIdRoute
@@ -226,6 +244,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/approvals'
+    | '/catalog'
     | '/control-tower'
     | '/costing'
     | '/dashboard'
@@ -236,6 +255,7 @@ export interface FileRouteTypes {
     | '/quotations'
     | '/reports'
     | '/search'
+    | '/settings'
     | '/tasks'
     | '/customers/$id'
     | '/orders/$id'
@@ -249,6 +269,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/approvals'
+    | '/catalog'
     | '/control-tower'
     | '/costing'
     | '/dashboard'
@@ -259,6 +280,7 @@ export interface FileRouteTypes {
     | '/quotations'
     | '/reports'
     | '/search'
+    | '/settings'
     | '/tasks'
     | '/customers/$id'
     | '/orders/$id'
@@ -273,6 +295,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/approvals'
+    | '/_authenticated/catalog'
     | '/_authenticated/control-tower'
     | '/_authenticated/costing'
     | '/_authenticated/dashboard'
@@ -283,6 +306,7 @@ export interface FileRouteTypes {
     | '/_authenticated/quotations'
     | '/_authenticated/reports'
     | '/_authenticated/search'
+    | '/_authenticated/settings'
     | '/_authenticated/tasks'
     | '/_authenticated/customers/$id'
     | '/_authenticated/orders/$id'
@@ -327,6 +351,13 @@ declare module '@tanstack/react-router' {
       path: '/approvals'
       fullPath: '/approvals'
       preLoaderRoute: typeof AuthenticatedApprovalsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/catalog': {
+      id: '/_authenticated/catalog'
+      path: '/catalog'
+      fullPath: '/catalog'
+      preLoaderRoute: typeof AuthenticatedCatalogRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/control-tower': {
@@ -399,6 +430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSearchRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/tasks': {
       id: '/_authenticated/tasks'
       path: '/tasks'
@@ -460,6 +498,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedApprovalsRoute: typeof AuthenticatedApprovalsRoute
+  AuthenticatedCatalogRoute: typeof AuthenticatedCatalogRoute
   AuthenticatedControlTowerRoute: typeof AuthenticatedControlTowerRoute
   AuthenticatedCostingRoute: typeof AuthenticatedCostingRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -470,6 +509,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedQuotationsRoute: typeof AuthenticatedQuotationsRoute
   AuthenticatedReportsRoute: typeof AuthenticatedReportsRoute
   AuthenticatedSearchRoute: typeof AuthenticatedSearchRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTasksRoute: typeof AuthenticatedTasksRoute
   AuthenticatedCustomersIdRoute: typeof AuthenticatedCustomersIdRoute
   AuthenticatedOrdersIdRoute: typeof AuthenticatedOrdersIdRoute
@@ -482,6 +522,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedApprovalsRoute: AuthenticatedApprovalsRoute,
+  AuthenticatedCatalogRoute: AuthenticatedCatalogRoute,
   AuthenticatedControlTowerRoute: AuthenticatedControlTowerRoute,
   AuthenticatedCostingRoute: AuthenticatedCostingRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
@@ -492,6 +533,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedQuotationsRoute: AuthenticatedQuotationsRoute,
   AuthenticatedReportsRoute: AuthenticatedReportsRoute,
   AuthenticatedSearchRoute: AuthenticatedSearchRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTasksRoute: AuthenticatedTasksRoute,
   AuthenticatedCustomersIdRoute: AuthenticatedCustomersIdRoute,
   AuthenticatedOrdersIdRoute: AuthenticatedOrdersIdRoute,
