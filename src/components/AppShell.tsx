@@ -7,6 +7,7 @@ import {
   ClipboardList,
   FileText,
   Gauge,
+  Globe,
   LayoutDashboard,
   ListChecks,
   LogOut,
