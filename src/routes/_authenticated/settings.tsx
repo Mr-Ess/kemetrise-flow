@@ -38,14 +38,13 @@ export const Route = createFileRoute("/_authenticated/settings")({
 });
 
 type RulesForm = {
-  min_margin_percent: string;
-  default_margin_percent: string;
-  approval_threshold_amount: string;
+  min_margin: string;
+  standard_margin: string;
+  max_discount: string;
+  approval_threshold: string;
   costing_sla_hours: string;
   approval_sla_hours: string;
   followup_sla_hours: string;
-  quotation_validity_days: string;
-  tax_percent: string;
 };
 
 function SettingsPage() {
@@ -86,14 +85,13 @@ function SettingsPage() {
     const r = rulesQuery.data;
     if (r && !form) {
       setForm({
-        min_margin_percent: String(r.min_margin_percent ?? 15),
-        default_margin_percent: String(r.default_margin_percent ?? 25),
-        approval_threshold_amount: String(r.approval_threshold_amount ?? 0),
+        min_margin: String(r.min_margin ?? 15),
+        standard_margin: String(r.standard_margin ?? 25),
+        max_discount: String(r.max_discount ?? 10),
+        approval_threshold: String(r.approval_threshold ?? 0),
         costing_sla_hours: String(r.costing_sla_hours ?? 48),
         approval_sla_hours: String(r.approval_sla_hours ?? 24),
         followup_sla_hours: String(r.followup_sla_hours ?? 72),
-        quotation_validity_days: String(r.quotation_validity_days ?? 14),
-        tax_percent: String(r.tax_percent ?? 14),
       });
     }
   }, [rulesQuery.data, form]);
@@ -104,14 +102,13 @@ function SettingsPage() {
       const { error } = await supabase
         .from("pricing_rules")
         .update({
-          min_margin_percent: Number(form.min_margin_percent),
-          default_margin_percent: Number(form.default_margin_percent),
-          approval_threshold_amount: Number(form.approval_threshold_amount),
+          min_margin: Number(form.min_margin),
+          standard_margin: Number(form.standard_margin),
+          max_discount: Number(form.max_discount),
+          approval_threshold: Number(form.approval_threshold),
           costing_sla_hours: Number(form.costing_sla_hours),
           approval_sla_hours: Number(form.approval_sla_hours),
           followup_sla_hours: Number(form.followup_sla_hours),
-          quotation_validity_days: Number(form.quotation_validity_days),
-          tax_percent: Number(form.tax_percent),
         })
         .eq("id", rulesQuery.data.id);
       if (error) throw error;
@@ -144,11 +141,10 @@ function SettingsPage() {
   }
 
   const fields: { key: keyof RulesForm; label: string; hint?: string }[] = [
-    { key: "default_margin_percent", label: "هامش الربح الافتراضي %" },
-    { key: "min_margin_percent", label: "الحد الأدنى لهامش الربح %" },
-    { key: "approval_threshold_amount", label: "حد الاعتماد الإداري (ج.م)" },
-    { key: "tax_percent", label: "نسبة الضريبة %" },
-    { key: "quotation_validity_days", label: "صلاحية عرض السعر (يوم)" },
+    { key: "standard_margin", label: "هامش الربح الافتراضي %" },
+    { key: "min_margin", label: "الحد الأدنى لهامش الربح %" },
+    { key: "max_discount", label: "أقصى نسبة خصم %" },
+    { key: "approval_threshold", label: "حد الاعتماد الإداري (ج.م)" },
     { key: "costing_sla_hours", label: "مهلة التسعير (ساعة)" },
     { key: "approval_sla_hours", label: "مهلة الاعتماد (ساعة)" },
     { key: "followup_sla_hours", label: "مهلة متابعة العرض (ساعة)" },

@@ -53,7 +53,9 @@ const emptyForm = {
   category: "",
   unit: "قطعة",
   description: "",
-  base_price: "",
+  reference_price: "",
+  default_cost: "",
+  typical_delivery_days: "7",
   is_active: true,
 };
 
@@ -86,7 +88,11 @@ function CatalogPage() {
           category: form.category.trim() || null,
           unit: form.unit.trim() || "قطعة",
           description: form.description.trim() || null,
-          base_price: form.base_price ? Number(form.base_price) : 0,
+          reference_price: form.reference_price ? Number(form.reference_price) : 0,
+          default_cost: form.default_cost ? Number(form.default_cost) : 0,
+          typical_delivery_days: form.typical_delivery_days
+            ? Number(form.typical_delivery_days)
+            : 7,
           is_active: true,
         })
         .select("id, name")
@@ -181,14 +187,36 @@ function CatalogPage() {
                       </Select>
                     </div>
                   </div>
-                  <div className="grid gap-1.5">
-                    <Label>السعر الاسترشادي (ج.م)</Label>
-                    <Input
-                      type="number"
-                      inputMode="decimal"
-                      value={form.base_price}
-                      onChange={(e) => setForm({ ...form, base_price: e.target.value })}
-                    />
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div className="grid gap-1.5">
+                      <Label>السعر الاسترشادي (ج.م)</Label>
+                      <Input
+                        type="number"
+                        inputMode="decimal"
+                        value={form.reference_price}
+                        onChange={(e) => setForm({ ...form, reference_price: e.target.value })}
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label>التكلفة التقديرية (ج.م)</Label>
+                      <Input
+                        type="number"
+                        inputMode="decimal"
+                        value={form.default_cost}
+                        onChange={(e) => setForm({ ...form, default_cost: e.target.value })}
+                      />
+                    </div>
+                    <div className="grid gap-1.5">
+                      <Label>مدة التنفيذ (يوم)</Label>
+                      <Input
+                        type="number"
+                        inputMode="numeric"
+                        value={form.typical_delivery_days}
+                        onChange={(e) =>
+                          setForm({ ...form, typical_delivery_days: e.target.value })
+                        }
+                      />
+                    </div>
                   </div>
                   <div className="grid gap-1.5">
                     <Label>الوصف</Label>
@@ -230,7 +258,9 @@ function CatalogPage() {
                   <th className="p-2 text-start">الاسم</th>
                   <th className="p-2 text-start">التصنيف</th>
                   <th className="p-2 text-start">الوحدة</th>
-                  {canSeeCosts ? <th className="p-2 text-start">السعر الاسترشادي</th> : null}
+                  <th className="p-2 text-start">السعر الاسترشادي</th>
+                  {canSeeCosts ? <th className="p-2 text-start">التكلفة التقديرية</th> : null}
+                  <th className="p-2 text-start">مدة التنفيذ</th>
                   <th className="p-2 text-start">الحالة</th>
                   {isManager ? <th className="p-2" /> : null}
                 </tr>
@@ -241,9 +271,13 @@ function CatalogPage() {
                     <td className="p-2 font-medium">{p.name}</td>
                     <td className="p-2 text-muted-foreground">{p.category ?? "—"}</td>
                     <td className="p-2 text-muted-foreground">{p.unit}</td>
+                    <td className="num p-2">{egp(Number(p.reference_price ?? 0))}</td>
                     {canSeeCosts ? (
-                      <td className="num p-2">{egp(Number(p.base_price ?? 0))}</td>
+                      <td className="num p-2">{egp(Number(p.default_cost ?? 0))}</td>
                     ) : null}
+                    <td className="num p-2 text-muted-foreground">
+                      {p.typical_delivery_days} يوم
+                    </td>
                     <td className="p-2">
                       <StatusPill
                         label={p.is_active ? "مفعّل" : "موقوف"}

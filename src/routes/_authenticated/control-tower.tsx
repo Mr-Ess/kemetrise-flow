@@ -37,7 +37,7 @@ function ControlTower() {
       const [requests, orders, financials, tasks, rules, activities] = await Promise.all([
         supabase
           .from("sales_requests")
-          .select("id, code, title, status, status_changed_at, estimated_value, customers(full_name)"),
+          .select("id, code, title, status, updated_at, estimated_value, customers(full_name)"),
         supabase.from("orders").select("id, code, title, status, expected_delivery, total_price"),
         supabase.from("order_financials").select("*"),
         supabase.from("tasks").select("id, title, due_date, status"),
@@ -79,15 +79,15 @@ function ControlTower() {
   const today = new Date().toISOString().slice(0, 10);
 
   const lateCosting = data.requests.filter(
-    (r) => r.status === "costing_in_progress" && hoursSince(r.status_changed_at) > costingSla,
+    (r) => r.status === "costing_in_progress" && hoursSince(r.updated_at) > costingSla,
   );
   const lateApproval = data.requests.filter(
-    (r) => r.status === "pending_approval" && hoursSince(r.status_changed_at) > approvalSla,
+    (r) => r.status === "pending_approval" && hoursSince(r.updated_at) > approvalSla,
   );
   const stalledQuotes = data.requests.filter(
     (r) =>
       ["quotation_sent", "negotiation"].includes(r.status) &&
-      hoursSince(r.status_changed_at) > followupSla,
+      hoursSince(r.updated_at) > followupSla,
   );
   const lateOrders = data.orders.filter(
     (o) =>
@@ -141,7 +141,7 @@ function ControlTower() {
                       <p className="text-xs text-muted-foreground">
                         <span className="num">{r.code}</span> ·{" "}
                         {(r.customers as { full_name: string } | null)?.full_name} · متوقف منذ{" "}
-                        {age(r.status_changed_at)}
+                        {age(r.updated_at)}
                       </p>
                     </div>
                     <StatusPill
