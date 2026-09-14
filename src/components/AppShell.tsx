@@ -72,6 +72,17 @@ const NAV: NavGroup[] = [
     ],
   },
   {
+    title: "الموقع العام",
+    items: [
+      {
+        to: "/website",
+        label: "المحتوى والرسائل",
+        icon: Globe,
+        roles: ["admin", "management", "sales"],
+      },
+    ],
+  },
+  {
     title: "التحليلات",
     items: [
       { to: "/reports", label: "التقارير", icon: PieChart },
