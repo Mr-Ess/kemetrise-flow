@@ -243,6 +243,37 @@ function PortalDashboard() {
     </Button>
   );
 
+  const customer = (data as { customer?: { id: string; full_name?: string | null; phone?: string | null; email?: string | null } } | undefined)?.customer;
+
+  const headerActions = (
+    <div className="flex items-center gap-2">
+      {customer ? (
+        <Dialog open={newOpen} onOpenChange={setNewOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm">
+              <Plus className="size-4" />
+              طلب جديد
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-h-[85vh] max-w-2xl overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>طلب جديد</DialogTitle>
+            </DialogHeader>
+            <SalesRequestForm
+              mode="portal"
+              customerId={customer.id}
+              customer={customer}
+              originPage="/portal"
+              sourceDetail="customer_portal"
+              onDone={refresh}
+            />
+          </DialogContent>
+        </Dialog>
+      ) : null}
+      {logoutBtn}
+    </div>
+  );
+
   if (isLoading)
     return (
       <div className="mx-auto w-full max-w-5xl px-4 py-10">
