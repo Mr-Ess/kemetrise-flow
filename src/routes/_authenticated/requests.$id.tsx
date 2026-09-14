@@ -22,6 +22,8 @@ import { CostingPanel } from "@/components/CostingPanel";
 import { CommentsPanel } from "@/components/CommentsPanel";
 import { ActivityFeed } from "@/components/ActivityFeed";
 import { AttachmentsPanel } from "@/components/AttachmentsPanel";
+import { ChangeRequestsPanel } from "@/components/ChangeRequestsPanel";
+import { PortalLinkButton } from "@/components/PortalLinkButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
