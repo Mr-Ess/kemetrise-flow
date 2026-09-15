@@ -15,8 +15,8 @@ import { legacyPartners } from "@/lib/site-legacy";
 type DbPartner = {
   id: string; name_ar: string; name_en: string;
   desc_ar?: string; desc_en?: string; website_url?: string;
-  logo_url?: string; icon?: string; category: string; category_ar?: string;
-  spec_icon?: string; sort_order: number; is_featured: boolean;
+  logo_url?: string; icon?: string; category?: string; category_ar?: string;
+  spec_icon?: string; sort_order: number; is_featured?: boolean;
 };
 
 type DbTech = {
