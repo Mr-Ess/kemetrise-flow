@@ -27,6 +27,7 @@ interface Agent {
   contact_email: string | null;
   project_order: number;
   is_active?: boolean;
+  brand_activities?: { icon?: string; label_en?: string; label_ar?: string }[];
 }
 
 // ─────────────────────────────────────────────────────────────────
