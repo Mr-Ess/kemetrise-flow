@@ -63,22 +63,67 @@ export async function legacyProducts() {
 
 export async function legacyProjects() {
   const c = await loadContent();
-  return (c?.projects ?? []).map((p) => ({ ...p }));
+  return (c?.projects ?? []).map((p, i) => ({
+    id: p.id,
+    title: p.title,
+    title_en: p.title,
+    brand_name: p.client_name ?? "KemetRise",
+    sector: p.sector,
+    sector_ar: p.sector ?? undefined,
+    sector_en: p.sector ?? undefined,
+    execution_type: p.execution_type,
+    description: p.description ?? "",
+    description_en: p.description ?? "",
+    image_url: p.cover_url,
+    project_order: p.sort_order ?? i,
+    is_active: true,
+  }));
 }
 
 export async function legacyPartners() {
   const c = await loadContent();
-  return (c?.partners ?? []).map((p) => ({ ...p }));
+  return (c?.partners ?? []).map((p, i) => ({
+    id: p.id,
+    name: p.name,
+    name_en: p.name,
+    category: p.category ?? "Other",
+    category_ar: p.category ?? "أخرى",
+    description: p.description ?? "",
+    description_ar: p.description ?? "",
+    logo_url: p.logo_url,
+    website_url: p.website_url,
+    partner_type: p.partner_type,
+    sort_order: p.sort_order ?? i,
+  }));
 }
 
 export async function legacyAgents() {
   const c = await loadContent();
-  return (c?.agents ?? []).map((a) => ({ ...a }));
+  return (c?.agents ?? []).map((a, i) => ({
+    id: a.id,
+    name: a.name,
+    name_en: a.name,
+    region: a.region ?? "mena",
+    country: a.country ?? "",
+    country_en: a.country ?? "",
+    coverage_scope: a.coverage ?? a.bio ?? null,
+    coverage_scope_en: a.coverage ?? a.bio ?? null,
+    contact_email: a.email,
+    project_order: a.sort_order ?? i,
+    is_active: true,
+  }));
 }
 
 export async function legacyTeam() {
   const c = await loadContent();
-  return (c?.team ?? []).map((m) => ({ ...m }));
+  return (c?.team ?? []).map((m) => ({
+    name_en: m.name,
+    name_ar: m.name,
+    role_en: m.title ?? "",
+    role_ar: m.title ?? "",
+    avatar: (m.name ?? "KR").slice(0, 2).toUpperCase(),
+    color_key: "primary",
+  }));
 }
 
 export async function legacyNews() {
