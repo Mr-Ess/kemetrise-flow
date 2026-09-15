@@ -4,7 +4,7 @@ import { useNavigate } from "@/lib/compat-router";
 import PublicLayout from "@/layouts/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyProjects } from "@/lib/site-legacy";
 import {
   Cpu, GitBranch, Wrench, ChevronDown, Layers, ArrowRight,
 } from "lucide-react";
@@ -376,45 +376,24 @@ export default function PublicProjects() {
 
   // Fetch from Supabase; fall back to static data on error / empty
   useEffect(() => {
-    (supabase as any)
-      .from("website_projects")
-      .select("*")
-      .eq("is_active", true)
-      .order("project_order", { ascending: true })
-      .then(({ data, error }: { data: any; error: any }) => {
-        if (!error && data && data.length > 0) {
-          // Step 1 — Deduplicate: DB has duplicate rows (old without EN, new with EN).
-          // Group by brand_name + Arabic title; prefer the row that has title_en set.
-          const dedupeMap = new Map<string, any>();
-          for (const p of data) {
-            const arabicTitle = p.title || (p as any).title_ar || '';
-            const key = `${p.brand_name}||${arabicTitle}`;
-            const cur = dedupeMap.get(key);
-            if (!cur || ((p as any).title_en && !(cur as any).title_en)) {
-              dedupeMap.set(key, p);
-            }
-          }
-          const deduped = [...dedupeMap.values()]
-            .sort((a, b) => (a.project_order ?? (a as any).sort_order ?? 0) - (b.project_order ?? (b as any).sort_order ?? 0));
-
-          // Step 2 — Enrich: map DB column names → Project interface + fill missing EN fields
-          const enriched = deduped.map(p => {
-            const arabicTitle = p.title || (p as any).title_ar || '';
-            const s = STATIC_MAP[p.id] ?? STATIC_MAP_BY_TITLE[arabicTitle];
+    legacyProjects()
+      .then((rows) => {
+        if (rows.length > 0) {
+          const enriched = rows.map((p: any) => {
+            const st = STATIC_MAP[p.id] ?? STATIC_MAP_BY_TITLE[p.title];
             return {
               ...p,
-              title:          arabicTitle,
-              title_en:       (p as any).title_en  || s?.title_en,
-              description:    (p as any).desc_ar   || p.description,
-              description_en: (p as any).desc_en   || s?.description_en,
-              sector_en:      (p as any).sector_en || s?.sector_en,
-              sector_ar:      (p as any).sector_ar || s?.sector_ar,
+              title_en: p.title_en || st?.title_en,
+              description_en: p.description_en || st?.description_en,
+              sector_en: p.sector_en || st?.sector_en,
+              sector_ar: p.sector_ar || st?.sector_ar,
             };
           });
           setProjects(enriched as Project[]);
         }
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const filtered = useMemo(

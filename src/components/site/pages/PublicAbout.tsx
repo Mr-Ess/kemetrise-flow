@@ -4,7 +4,7 @@ import PublicLayout from "@/layouts/PublicLayout";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyTeam } from "@/lib/site-legacy";
 import {
   Target, Heart, Users, Globe, Award, TrendingUp,
   Rocket, Shield, Code2, ArrowRight, CheckCircle, Zap,
@@ -30,7 +30,6 @@ const TEAM = [
   { name: "Dina Fouad",        nameAr: "دينا فؤاد",    role: "Head of Marketing",    roleAr: "رئيسة التسويق",              avatar: "DF", bg: "bg-pink-500/20", color: "text-pink-400" },
 ];
 
-const db = supabase as any;
 
 interface TeamMember {
   name: string;
@@ -82,12 +81,9 @@ export default function PublicAbout() {
 
   useEffect(() => {
     let cancelled = false;
-    db.from("website_leadership_team")
-      .select("name_ar,name_en,role_ar,role_en,avatar,color_key")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data, error }: any) => {
-        if (cancelled || error || !data || data.length === 0) return;
+    legacyTeam()
+      .then((data) => {
+        if (cancelled || data.length === 0) return;
         const mapped: TeamMember[] = data.map((m: any) => {
           const color = TEAM_COLORS[m.color_key] ?? TEAM_COLORS.primary;
           return {

@@ -4,7 +4,7 @@ import { useNavigate } from "@/lib/compat-router";
 import PublicLayout from "@/layouts/PublicLayout";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyAgents } from "@/lib/site-legacy";
 import LeadCaptureModal from "@/components/shared/LeadCaptureModal";
 import {
   Globe, MapPin, Mail, Phone, X, ChevronRight,
@@ -632,23 +632,10 @@ export default function PublicAgents() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    (supabase as any)
-      .from("website_agents")
-      .select("*")
-      .eq("is_active", true)
-      .order("project_order", { ascending: true })
-      .then(({ data, error }: any) => {
+    legacyAgents()
+      .then((rows) => {
         if (cancelled) return;
-        if (!error && data && data.length > 0) {
-          // DB stores the English bio in `bio_en` — map it to coverage_scope_en
-          const mapped = data.map((a: any) => ({
-            ...a,
-            coverage_scope_en: a.bio_en || a.coverage_scope_en || null,
-            name_en: a.name_en || a.name,
-            country_en: a.country_en || a.country,
-          }));
-          setAgents(mapped);
-        }
+        if (rows.length > 0) setAgents(rows as Agent[]);
         setLoading(false);
       })
       .catch(() => { if (!cancelled) setLoading(false); });

@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { ArrowRight, Handshake, CheckCircle, ExternalLink, Cpu, Loader2, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import LeadCaptureModal from "@/components/shared/LeadCaptureModal";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyPartners } from "@/lib/site-legacy";
 
 /* ══════════════════════════════════════════════════════════════════
    DB TYPES
@@ -143,14 +143,10 @@ export default function PublicPartners() {
   }, [activeSpec]);
 
   useEffect(() => {
-    const db = supabase as any;
-    Promise.all([
-      db.from("website_partners").select("*").order("sort_order"),
-      db.from("website_tech_stack").select("*").order("sort_order"),
-    ]).then(([p, t]: any[]) => {
-      if (p.data?.length > 0) setDbPartners(p.data);
-      if (t.data?.length > 0) setDbTech(t.data);
-    }).finally(() => setLoading(false));
+    legacyPartners()
+      .then((rows) => { if (rows.length > 0) setDbPartners(rows as unknown as DbPartner[]); })
+      .catch(() => { /* keep built-in partners */ })
+      .finally(() => setLoading(false));
   }, []);
 
   // Group DB partners by specialization
