@@ -20,7 +20,8 @@ import {
   Truck, Camera, LucideIcon, Loader2, ChevronDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyServices } from "@/lib/site-legacy";
+import { submitLead } from "@/lib/site-lead";
 import { toast } from "sonner";
 
 const ICON_MAP: Record<string, LucideIcon> = {
@@ -551,21 +552,9 @@ export default function PublicServices() {
     (async () => {
       setLoading(true);
       try {
-        const { data, error } = await (supabase as any)
-          .from("website_services")
-          .select("*")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true });
-        if (error) {
-          console.error("website_services fetch error:", error);
-          setServices(FALLBACK_SERVICES);
-        } else if (data && data.length > 0) {
-          setServices(data);
-        } else {
-          setServices(FALLBACK_SERVICES);
-        }
-      } catch (e) {
-        console.error("website_services exception:", e);
+        const rows = await legacyServices();
+        setServices(rows.length > 0 ? (rows as any) : FALLBACK_SERVICES);
+      } catch {
         setServices(FALLBACK_SERVICES);
       }
       setLoading(false);
@@ -593,36 +582,16 @@ export default function PublicServices() {
     }
     setSubmitting(true);
     try {
-      const { error } = await (supabase as any).from("service_requests").insert({
-        service_id: selectedSvc?.id ?? null,
-        service_name_ar: selectedSvc?.name_ar ?? "",
-        service_name_en: selectedSvc?.name_en ?? "",
-        full_name: form.fullName.trim(),
+      await submitLead({
+        kind: "service",
+        refName: selectedSvc ? (R ? selectedSvc.name_ar : selectedSvc.name_en) : null,
+        refId: selectedSvc?.id ?? null,
+        fullName: form.fullName.trim(),
         email: form.email.trim(),
-        phone: form.phone.trim() || null,
-        company: form.company.trim() || null,
-        message: form.message.trim() || null,
+        phone: form.phone.trim(),
+        company: form.company.trim(),
+        message: form.message.trim(),
       });
-      if (error) throw error;
-
-      const { data: emailResult, error: emailInvokeError } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          section_en: `Services — ${selectedSvc?.name_en ?? "Service Request"}`,
-          section_ar: `الخدمات — ${selectedSvc?.name_ar ?? "طلب خدمة"}`,
-          data: {
-            name: form.fullName.trim(),
-            email: form.email.trim(),
-            phone: form.phone.trim(),
-            company: form.company.trim(),
-            topic: selectedSvc?.name_en ?? "Service Request",
-            message: form.message.trim(),
-          },
-        },
-      });
-      if (emailInvokeError) throw emailInvokeError;
-      if (emailResult && typeof emailResult === "object" && "success" in emailResult && !emailResult.success) {
-        throw new Error("Email provider rejected the request");
-      }
 
       setRequestSent(true);
       toast.success(R ? "تم استلام طلبك بنجاح." : "Your request was received successfully.");

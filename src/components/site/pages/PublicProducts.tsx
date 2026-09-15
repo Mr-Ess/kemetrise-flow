@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { legacyProducts } from "@/lib/site-legacy";
+import { submitLead } from "@/lib/site-lead";
 
 // -----------------------------------------------------------------
 //  TYPES
@@ -164,44 +165,16 @@ function RequestDialog({
     }
     setSubmitting(true);
     try {
-      const { error: insertError } = await (supabase as any).from("service_requests").insert({
-        service_name: item.name,
-        service_name_ar: item.name_ar,
-        service_name_en: item.name,
-        full_name: form.name,
+      await submitLead({
+        kind: item.type === "service" ? "service" : "product",
+        refName: isAr ? item.name_ar : item.name,
+        refId: item.id,
+        fullName: form.name,
         email: form.email,
-        phone: form.phone || null,
-        company: form.company || null,
-        message: form.message || null,
-        status: "pending",
-        source: "website",
-        // Compatibility columns for environments that still consume legacy naming.
-        customer_name: form.name,
-        customer_email: form.email,
-        customer_phone: form.phone || null,
-        company_name: form.company || null,
+        phone: form.phone,
+        company: form.company,
+        message: form.message,
       });
-      if (insertError) throw insertError;
-
-      // Send notification + confirmation emails
-      const { data: emailResult, error: emailInvokeError } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          section_en: `Products & Services — ${item.name}`,
-          section_ar: `المنتجات والخدمات — ${item.name_ar}`,
-          data: {
-            name:    form.name,
-            email:   form.email,
-            phone:   form.phone,
-            company: form.company,
-            product: `${item.name} / ${item.name_ar}`,
-            message: form.message,
-          },
-        },
-      });
-      if (emailInvokeError) throw emailInvokeError;
-      if (emailResult && typeof emailResult === "object" && "success" in emailResult && !emailResult.success) {
-        throw new Error("Email provider rejected the request");
-      }
 
       setSuccess(true);
       toast.success(isAr ? "تم استلام طلبك بنجاح." : "Your request was received successfully.");
@@ -360,16 +333,9 @@ export default function PublicProducts() {
   // Load catalog from Supabase; fall back to ALL_ITEMS if DB not ready
   const [items, setItems] = useState<CatalogItem[]>(ALL_ITEMS);
   useEffect(() => {
-    (supabase as any)
-      .from("website_products")
-      .select("*")
-      .eq("is_active", true)
-      .order("sort_order", { ascending: true })
-      .then(({ data, error }: { data: any; error: any }) => {
-        if (!error && data && data.length > 0) {
-          setItems(data as CatalogItem[]);
-        }
-      });
+    legacyProducts()
+      .then((rows) => { if (rows.length > 0) setItems(rows as CatalogItem[]); })
+      .catch(() => { /* keep built-in catalog */ });
   }, []);
 
   const categories = useMemo(() => {
