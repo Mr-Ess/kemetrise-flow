@@ -149,3 +149,181 @@
 @utility brand-gradient {
   background-image: linear-gradient(135deg, oklch(0.72 0.17 52), oklch(0.64 0.16 32));
 }
+
+/* ==========================================================================
+   KemetRise: Legacy Nexus — public website theme (scoped to .kemet-site)
+   Original brand identity: gold on deep navy, Orbitron / Rajdhani.
+   ========================================================================== */
+.kemet-site {
+  --background: hsl(230 15% 8%);
+  --foreground: hsl(45 80% 85%);
+  --surface: hsl(230 15% 11%);
+  --surface-foreground: hsl(45 60% 80%);
+  --card: hsl(230 15% 11%);
+  --card-foreground: hsl(45 60% 80%);
+  --popover: hsl(230 15% 11%);
+  --popover-foreground: hsl(45 60% 80%);
+  --primary: hsl(42 85% 55%);
+  --primary-foreground: hsl(230 15% 8%);
+  --secondary: hsl(230 20% 16%);
+  --secondary-foreground: hsl(45 60% 80%);
+  --muted: hsl(230 15% 14%);
+  --muted-foreground: hsl(230 10% 50%);
+  --accent: hsl(42 85% 55%);
+  --accent-foreground: hsl(230 15% 8%);
+  --destructive: hsl(0 72% 50%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(42 40% 25%);
+  --input: hsl(230 15% 18%);
+  --ring: hsl(42 85% 55%);
+  --sidebar: hsl(230 20% 6%);
+  --sidebar-foreground: hsl(45 60% 80%);
+  --sidebar-primary: hsl(42 85% 55%);
+  --sidebar-primary-foreground: hsl(230 15% 8%);
+  --sidebar-accent: hsl(230 20% 12%);
+  --sidebar-accent-foreground: hsl(45 60% 80%);
+  --sidebar-border: hsl(42 40% 20%);
+  --sidebar-ring: hsl(42 85% 55%);
+
+  font-family: "Rajdhani", "Cairo", sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.kemet-site[data-theme="light"] {
+  --background: hsl(40 30% 96%);
+  --foreground: hsl(230 25% 12%);
+  --surface: hsl(0 0% 100%);
+  --surface-foreground: hsl(230 25% 12%);
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(230 25% 12%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(230 25% 12%);
+  --primary: hsl(38 75% 42%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(40 20% 90%);
+  --secondary-foreground: hsl(230 25% 15%);
+  --muted: hsl(40 15% 92%);
+  --muted-foreground: hsl(230 10% 40%);
+  --accent: hsl(38 75% 42%);
+  --accent-foreground: hsl(0 0% 100%);
+  --border: hsl(38 30% 80%);
+  --input: hsl(40 15% 88%);
+  --ring: hsl(38 75% 42%);
+  --sidebar: hsl(40 25% 94%);
+  --sidebar-foreground: hsl(230 25% 15%);
+  --sidebar-accent: hsl(40 20% 88%);
+  --sidebar-accent-foreground: hsl(230 25% 15%);
+  --sidebar-border: hsl(38 30% 78%);
+}
+
+@utility font-display {
+  font-family: "Orbitron", sans-serif;
+}
+
+@utility font-body {
+  font-family: "Rajdhani", sans-serif;
+}
+
+@utility gold-glow {
+  box-shadow:
+    0 0 15px hsl(42 85% 55% / 0.3),
+    0 0 30px hsl(42 85% 55% / 0.1);
+}
+
+@utility gold-glow-strong {
+  box-shadow:
+    0 0 20px hsl(42 85% 55% / 0.5),
+    0 0 40px hsl(42 85% 55% / 0.2),
+    inset 0 0 20px hsl(42 85% 55% / 0.05);
+}
+
+@utility gold-text-glow {
+  text-shadow:
+    0 0 10px hsl(42 85% 55% / 0.5),
+    0 0 20px hsl(42 85% 55% / 0.3);
+}
+
+@utility hieroglyph-border {
+  border-image: repeating-linear-gradient(
+      90deg,
+      hsl(42 85% 55% / 0.6) 0px,
+      hsl(42 85% 55% / 0.2) 4px,
+      transparent 4px,
+      transparent 8px
+    )
+    1;
+}
+
+@utility cyber-scanline {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      hsl(42 85% 55% / 0.03) 2px,
+      hsl(42 85% 55% / 0.03) 4px
+    );
+    pointer-events: none;
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  14% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  28% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  42% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  56% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes hieroglyph-scroll {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.95;
+  }
+}

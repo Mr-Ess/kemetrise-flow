@@ -33,11 +33,13 @@ import { Route as SiteContactRouteImport } from './routes/_site/contact'
 import { Route as SiteOurAgentsRouteImport } from './routes/_site/our-agents'
 import { Route as SiteOurProjectsRouteImport } from './routes/_site/our-projects'
 import { Route as SitePartnersRouteImport } from './routes/_site/partners'
-import { Route as SitePlansRouteImport } from './routes/_site/plans'
 import { Route as SitePortfolioRouteImport } from './routes/_site/portfolio'
+import { Route as SitePricingRouteImport } from './routes/_site/pricing'
+import { Route as SitePrivacyRouteImport } from './routes/_site/privacy'
 import { Route as SiteProductsRouteImport } from './routes/_site/products'
 import { Route as SiteRequestRouteImport } from './routes/_site/request'
 import { Route as SiteServicesRouteImport } from './routes/_site/services'
+import { Route as SiteTermsRouteImport } from './routes/_site/terms'
 import { Route as PortalIndexRouteImport } from './routes/portal.index'
 import { Route as PortalTokenRouteImport } from './routes/portal.$token'
 import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authenticated/customers.index'
@@ -170,14 +172,19 @@ const SitePartnersRoute = SitePartnersRouteImport.update({
   path: '/partners',
   getParentRoute: () => SiteRoute,
 } as any)
-const SitePlansRoute = SitePlansRouteImport.update({
-  id: '/plans',
-  path: '/plans',
-  getParentRoute: () => SiteRoute,
-} as any)
 const SitePortfolioRoute = SitePortfolioRouteImport.update({
   id: '/portfolio',
   path: '/portfolio',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePricingRoute = SitePricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SitePrivacyRoute = SitePrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => SiteRoute,
 } as any)
 const SiteProductsRoute = SiteProductsRouteImport.update({
@@ -193,6 +200,11 @@ const SiteRequestRoute = SiteRequestRouteImport.update({
 const SiteServicesRoute = SiteServicesRouteImport.update({
   id: '/services',
   path: '/services',
+  getParentRoute: () => SiteRoute,
+} as any)
+const SiteTermsRoute = SiteTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => SiteRoute,
 } as any)
 const PortalIndexRoute = PortalIndexRouteImport.update({
@@ -279,11 +291,13 @@ export interface FileRoutesByFullPath {
   '/our-agents': typeof SiteOurAgentsRoute
   '/our-projects': typeof SiteOurProjectsRoute
   '/partners': typeof SitePartnersRoute
-  '/plans': typeof SitePlansRoute
   '/portfolio': typeof SitePortfolioRoute
+  '/pricing': typeof SitePricingRoute
+  '/privacy': typeof SitePrivacyRoute
   '/products': typeof SiteProductsRoute
   '/request': typeof SiteRequestRoute
   '/services': typeof SiteServicesRoute
+  '/terms': typeof SiteTermsRoute
   '/portal/$token': typeof PortalTokenRoute
   '/portal/': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
@@ -319,11 +333,13 @@ export interface FileRoutesByTo {
   '/our-agents': typeof SiteOurAgentsRoute
   '/our-projects': typeof SiteOurProjectsRoute
   '/partners': typeof SitePartnersRoute
-  '/plans': typeof SitePlansRoute
   '/portfolio': typeof SitePortfolioRoute
+  '/pricing': typeof SitePricingRoute
+  '/privacy': typeof SitePrivacyRoute
   '/products': typeof SiteProductsRoute
   '/request': typeof SiteRequestRoute
   '/services': typeof SiteServicesRoute
+  '/terms': typeof SiteTermsRoute
   '/portal/$token': typeof PortalTokenRoute
   '/portal': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
@@ -361,11 +377,13 @@ export interface FileRoutesById {
   '/_site/our-agents': typeof SiteOurAgentsRoute
   '/_site/our-projects': typeof SiteOurProjectsRoute
   '/_site/partners': typeof SitePartnersRoute
-  '/_site/plans': typeof SitePlansRoute
   '/_site/portfolio': typeof SitePortfolioRoute
+  '/_site/pricing': typeof SitePricingRoute
+  '/_site/privacy': typeof SitePrivacyRoute
   '/_site/products': typeof SiteProductsRoute
   '/_site/request': typeof SiteRequestRoute
   '/_site/services': typeof SiteServicesRoute
+  '/_site/terms': typeof SiteTermsRoute
   '/portal/$token': typeof PortalTokenRoute
   '/_site/': typeof SiteIndexRoute
   '/portal/': typeof PortalIndexRoute
@@ -404,11 +422,13 @@ export interface FileRouteTypes {
     | '/our-agents'
     | '/our-projects'
     | '/partners'
-    | '/plans'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/products'
     | '/request'
     | '/services'
+    | '/terms'
     | '/portal/$token'
     | '/portal/'
     | '/customers/$id'
@@ -444,11 +464,13 @@ export interface FileRouteTypes {
     | '/our-agents'
     | '/our-projects'
     | '/partners'
-    | '/plans'
     | '/portfolio'
+    | '/pricing'
+    | '/privacy'
     | '/products'
     | '/request'
     | '/services'
+    | '/terms'
     | '/portal/$token'
     | '/portal'
     | '/customers/$id'
@@ -485,11 +507,13 @@ export interface FileRouteTypes {
     | '/_site/our-agents'
     | '/_site/our-projects'
     | '/_site/partners'
-    | '/_site/plans'
     | '/_site/portfolio'
+    | '/_site/pricing'
+    | '/_site/privacy'
     | '/_site/products'
     | '/_site/request'
     | '/_site/services'
+    | '/_site/terms'
     | '/portal/$token'
     | '/_site/'
     | '/portal/'
@@ -682,18 +706,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitePartnersRouteImport
       parentRoute: typeof SiteRoute
     }
-    '/_site/plans': {
-      id: '/_site/plans'
-      path: '/plans'
-      fullPath: '/plans'
-      preLoaderRoute: typeof SitePlansRouteImport
-      parentRoute: typeof SiteRoute
-    }
     '/_site/portfolio': {
       id: '/_site/portfolio'
       path: '/portfolio'
       fullPath: '/portfolio'
       preLoaderRoute: typeof SitePortfolioRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/pricing': {
+      id: '/_site/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof SitePricingRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/privacy': {
+      id: '/_site/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof SitePrivacyRouteImport
       parentRoute: typeof SiteRoute
     }
     '/_site/products': {
@@ -715,6 +746,13 @@ declare module '@tanstack/react-router' {
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof SiteServicesRouteImport
+      parentRoute: typeof SiteRoute
+    }
+    '/_site/terms': {
+      id: '/_site/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof SiteTermsRouteImport
       parentRoute: typeof SiteRoute
     }
     '/portal/': {
@@ -856,11 +894,13 @@ interface SiteRouteChildren {
   SiteOurAgentsRoute: typeof SiteOurAgentsRoute
   SiteOurProjectsRoute: typeof SiteOurProjectsRoute
   SitePartnersRoute: typeof SitePartnersRoute
-  SitePlansRoute: typeof SitePlansRoute
   SitePortfolioRoute: typeof SitePortfolioRoute
+  SitePricingRoute: typeof SitePricingRoute
+  SitePrivacyRoute: typeof SitePrivacyRoute
   SiteProductsRoute: typeof SiteProductsRoute
   SiteRequestRoute: typeof SiteRequestRoute
   SiteServicesRoute: typeof SiteServicesRoute
+  SiteTermsRoute: typeof SiteTermsRoute
   SiteIndexRoute: typeof SiteIndexRoute
   SiteNewsSlugRoute: typeof SiteNewsSlugRoute
   SiteNewsIndexRoute: typeof SiteNewsIndexRoute
@@ -872,11 +912,13 @@ const SiteRouteChildren: SiteRouteChildren = {
   SiteOurAgentsRoute: SiteOurAgentsRoute,
   SiteOurProjectsRoute: SiteOurProjectsRoute,
   SitePartnersRoute: SitePartnersRoute,
-  SitePlansRoute: SitePlansRoute,
   SitePortfolioRoute: SitePortfolioRoute,
+  SitePricingRoute: SitePricingRoute,
+  SitePrivacyRoute: SitePrivacyRoute,
   SiteProductsRoute: SiteProductsRoute,
   SiteRequestRoute: SiteRequestRoute,
   SiteServicesRoute: SiteServicesRoute,
+  SiteTermsRoute: SiteTermsRoute,
   SiteIndexRoute: SiteIndexRoute,
   SiteNewsSlugRoute: SiteNewsSlugRoute,
   SiteNewsIndexRoute: SiteNewsIndexRoute,
