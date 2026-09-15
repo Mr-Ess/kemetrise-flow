@@ -14,6 +14,7 @@ import {
   Building2, Users, Headphones, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCategoryOptions } from "@/lib/categories";
 
 const CONTACT_TOPICS = [
   { en: "General Inquiry",    ar: "استفسار عام" },
@@ -33,6 +34,7 @@ export default function PublicContact() {
   const { i18n } = useTranslation();
   const R = i18n.language === "ar";
   const [form, setForm] = useState({ name: "", email: "", phone: "", topic: "", message: "" });
+  const topicOptions = useCategoryOptions("inquiry_type");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [contactSettings, setContactSettings] = useState<Record<string, string>>({});
