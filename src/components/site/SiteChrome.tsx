@@ -14,7 +14,7 @@ export const SITE_NAV = [
   { to: "/products", label: "منتجاتنا" },
   { to: "/our-projects", label: "مشاريعنا" },
   { to: "/portfolio", label: "أعمالنا" },
-  { to: "/plans", label: "باقاتنا" },
+  { to: "/pricing", label: "باقاتنا" },
   { to: "/about", label: "من نحن" },
   { to: "/partners", label: "شركاؤنا" },
   { to: "/our-agents", label: "وكلاؤنا" },
