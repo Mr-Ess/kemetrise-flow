@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { convertContactMessage } from "@/lib/site.functions";
 import { formatDateTime } from "@/lib/format";
 import { ContentManager } from "@/components/website/ContentManager";
+import { CategoriesManager } from "@/components/website/CategoriesManager";
 import {
   EmptyState,
   LoadingState,
@@ -67,6 +68,7 @@ function WebsiteAdminPage() {
         <TabsList>
           <TabsTrigger value="messages">الرسائل</TabsTrigger>
           <TabsTrigger value="content">المحتوى</TabsTrigger>
+          <TabsTrigger value="categories">التصنيفات</TabsTrigger>
         </TabsList>
         <TabsContent value="messages" className="mt-4">
           <MessagesInbox />
@@ -74,6 +76,11 @@ function WebsiteAdminPage() {
         <TabsContent value="content" className="mt-4">
           <SectionCard title="محتوى الموقع">
             <ContentManager />
+          </SectionCard>
+        </TabsContent>
+        <TabsContent value="categories" className="mt-4">
+          <SectionCard title="قوائم التصنيفات">
+            <CategoriesManager />
           </SectionCard>
         </TabsContent>
       </Tabs>
