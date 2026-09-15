@@ -148,19 +148,12 @@ function ScrollProgress() {
 /** Ambient tech backdrop: soft aurora blooms + faint engineering grid. */
 function SiteAmbience() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
-      <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-primary/10 blur-[120px] float-slow" />
-      <div className="absolute top-1/3 -end-40 size-[30rem] rounded-full bg-sky-500/8 blur-[130px]" />
-      <div className="absolute bottom-0 start-1/3 size-[28rem] rounded-full bg-emerald-500/7 blur-[130px]" />
-      <div
-        className="absolute inset-0 opacity-[0.35]"
-        style={{
-          backgroundImage:
-            "linear-gradient(hsl(var(--primary)/0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)/0.05) 1px, transparent 1px)",
-          backgroundSize: "64px 64px",
-          maskImage: "radial-gradient(75% 60% at 50% 25%, #000 30%, transparent 100%)",
-        }}
-      />
+    <div className="kemet-ambience pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
+      <div className="kemet-sun-disc" />
+      <div className="kemet-nile-line" />
+      <div className="kemet-temple-grid" />
+      <div className="kemet-glyph-column kemet-glyph-column-start">𓂀 𓋹 𓆣 𓇳 𓊹 𓂀</div>
+      <div className="kemet-glyph-column kemet-glyph-column-end">𓇳 𓊹 𓆣 𓋹 𓂀 𓇳</div>
     </div>
   );
 }
@@ -254,16 +247,19 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <SiteAmbience />
       {/* Navbar */}
       <header className={cn(
-        "sticky top-0 z-50 transition-all duration-300",
+        "kemet-header sticky top-0 z-50 transition-all duration-300",
         scrolled ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-sm" : "bg-background/70 backdrop-blur-md border-b border-transparent"
       )}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
           {/* Logo */}
-          <button onClick={() => navigate("/")} className="flex items-center gap-2 shrink-0 group">
-            <div className="w-7 h-7 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center group-hover:bg-primary/30 transition-colors">
-              <Globe className="w-4 h-4 text-primary" />
+          <button onClick={() => navigate("/")} className="kemet-brand flex items-center gap-3 shrink-0 group">
+            <div className="kemet-cartouche flex items-center justify-center transition-colors">
+              <span aria-hidden="true">K</span>
             </div>
-            <span className="font-display text-sm font-black text-primary tracking-widest gold-text-glow">KemetRise</span>
+            <span className="leading-none text-start">
+              <span className="kemet-brand-name block">KemetRise</span>
+              <span className="kemet-brand-legacy block">LEGACY NEXUS</span>
+            </span>
           </button>
 
           {/* Desktop nav */}
@@ -438,10 +434,10 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       </header>
 
       {/* Content */}
-      <main className="relative z-10">{children}</main>
+      <main className="kemet-main relative z-10">{children}</main>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 bg-sidebar/20 mt-20">
+      <footer className="kemet-footer border-t border-border/50 bg-sidebar/20 mt-20">
         <div className="max-w-7xl mx-auto px-4 py-14">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             <div className="md:col-span-2">
@@ -472,8 +468,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               <div key={col.title}>
                 <h4 className="text-xs font-bold mb-3 uppercase tracking-widest text-foreground/70">{col.title}</h4>
                 <ul className="space-y-1.5">
-                  {col.links.map(lnk => (
-                    <li key={lnk.h}>
+                  {col.links.map((lnk, linkIndex) => (
+                    <li key={`${col.title}-${lnk.h}-${linkIndex}`}>
                       <button onClick={() => navigate(lnk.h)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{lnk.l}</button>
                     </li>
                   ))}

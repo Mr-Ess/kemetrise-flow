@@ -605,16 +605,16 @@ export default function PublicServices() {
     <PublicLayout>
       <div dir={R ? "rtl" : "ltr"}>
       {/* Hero */}
-      <section className="relative py-24 overflow-hidden">
+      <section className="kemet-page-hero relative py-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/3 w-96 h-96 bg-primary/5 rounded-full blur-[100px]" />
           <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-indigo-500/5 rounded-full blur-[80px]" />
         </div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
           <Badge className="mb-6 bg-primary/10 text-primary border-primary/20 text-xs gap-2">
             <Zap className="w-3.5 h-3.5" />{R ? "خدماتنا ووحداتنا" : "Our Services & Modules"}
           </Badge>
-          <h1 className="text-4xl md:text-5xl font-display font-black mb-4">
+          <h1 className="kemet-section-title text-4xl md:text-6xl font-black mb-4">
             {R ? `${services.length}+ خدمة متكاملة` : `${services.length}+ Integrated Services`}
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto">
@@ -658,7 +658,7 @@ export default function PublicServices() {
 
           {/* Loading skeleton */}
           {loading && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="kemet-service-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="h-52 rounded-xl bg-secondary/20 animate-pulse" />
               ))}
@@ -673,7 +673,7 @@ export default function PublicServices() {
                 return (
                   <Card
                     key={s.id}
-                    className="border hover:-translate-y-1 transition-all duration-300 group overflow-hidden"
+                    className="kemet-service-card border transition-all duration-500 group overflow-hidden"
                     style={{ borderColor: s.color + "40" }}
                   >
                     <CardContent className="p-0">
