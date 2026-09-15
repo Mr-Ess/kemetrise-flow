@@ -155,7 +155,7 @@ export default function PublicLanding() {
     <PublicLayout>
 
       {/* ══ 1. HERO ══════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden pt-28 pb-24">
+      <section className="kemet-home-hero relative overflow-hidden pt-28 pb-24">
         {/* Glowing orbs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/4 rounded-full blur-[120px] animate-pulse" />
@@ -177,12 +177,17 @@ export default function PublicLanding() {
           ))}
         </div>
 
+        <div className="kemet-hero-gate" aria-hidden>
+          <span className="kemet-gate-pylon kemet-gate-right" />
+          <span className="kemet-gate-pylon kemet-gate-left" />
+          <span className="kemet-gate-beam" />
+        </div>
         <div className="max-w-5xl mx-auto px-4 text-center relative z-10">
           <Badge className="mb-6 px-4 py-1.5 bg-primary/10 text-primary border-primary/30 text-xs gap-2 animate-fade-in-down">
             <Zap className="w-3.5 h-3.5" />
             {R ? "المنصة الموحدة متعددة المستأجرين" : "Unified Multi-Tenant SaaS & ERP Platform"}
           </Badge>
-          <h1 className="text-5xl md:text-7xl font-display font-black leading-tight mb-6 animate-fade-in-up">
+          <h1 className="kemet-monument-title text-5xl md:text-7xl font-display font-black leading-tight mb-6 animate-fade-in-up">
             <span className="text-primary gold-text-glow">KemetRise</span>
             <br />
             <span className="text-muted-foreground text-3xl md:text-4xl font-medium tracking-widest">Legacy Nexus</span>
@@ -210,7 +215,7 @@ export default function PublicLanding() {
           </div>
 
           {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border/30 rounded-2xl overflow-hidden border border-border/30 max-w-2xl mx-auto">
+          <div className="kemet-stats mt-16 grid grid-cols-2 sm:grid-cols-4 gap-px bg-border/30 overflow-hidden border border-border/30 max-w-2xl mx-auto">
             {[
               { val: 11,  suffix: "",  labelEn: "Portals",   labelAr: "بوابة" },
               { val: 255, suffix: "+", labelEn: "DB Tables", labelAr: "جدول بيانات" },
