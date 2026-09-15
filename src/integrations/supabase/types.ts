@@ -2526,7 +2526,17 @@ export type Database = {
       next_code: { Args: { prefix: string; seq: string }; Returns: string }
     }
     Enums: {
-      app_role: "admin" | "management" | "sales" | "costing" | "staff"
+      app_role:
+        | "admin"
+        | "management"
+        | "sales"
+        | "costing"
+        | "staff"
+        | "partner"
+        | "agent"
+        | "vendor"
+        | "provider"
+        | "marketing"
       change_request_status: "open" | "in_review" | "accepted" | "rejected"
       cost_category:
         | "raw_materials"
@@ -2757,7 +2767,18 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "management", "sales", "costing", "staff"],
+      app_role: [
+        "admin",
+        "management",
+        "sales",
+        "costing",
+        "staff",
+        "partner",
+        "agent",
+        "vendor",
+        "provider",
+        "marketing",
+      ],
       change_request_status: ["open", "in_review", "accepted", "rejected"],
       cost_category: [
         "raw_materials",
