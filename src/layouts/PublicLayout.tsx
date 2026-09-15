@@ -11,9 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
-
-const db = supabase as any;
+import { legacySettings } from "@/lib/site-legacy";
 
 const KEY = "kemet-theme";
 function useTheme() {
@@ -21,7 +19,7 @@ function useTheme() {
     (typeof window !== "undefined" && (localStorage.getItem(KEY) as any)) || "dark"
   );
   useEffect(() => {
-    document.documentElement.classList.toggle("light", theme === "light");
+    
     localStorage.setItem(KEY, theme);
   }, [theme]);
   return { theme, toggle: () => setTheme(t => t === "dark" ? "light" : "dark") };
@@ -47,39 +45,39 @@ const ABOUT_ITEMS = [
 /* All portal definitions — used in multi-portal dropdown */
 const ALL_PORTALS: { role: string; ar: string; en: string; href: string; color: string; icon: string }[] = [
   { role: "superadmin", ar: "لوحة التحكم المركزية", en: "Central Dashboard", href: "/dashboard", color: "text-red-400",     icon: "🛡️" },
-  { role: "admin",      ar: "الإدارة",             en: "Admin Portal",     href: "/admin",     color: "text-primary",   icon: "⚙️" },
-  { role: "manager",    ar: "المدير",              en: "Manager Portal",   href: "/manager",   color: "text-violet-400",icon: "👔" },
-  { role: "staff",      ar: "الموظف",             en: "Staff Portal",     href: "/staff",     color: "text-teal-400",  icon: "🧑‍💻" },
-  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/partner",   color: "text-indigo-400",icon: "🤝" },
-  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/agent",     color: "text-emerald-400",icon: "🧑‍💼" },
-  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/vendor",    color: "text-orange-400",icon: "🏪" },
-  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/provider",  color: "text-yellow-400",icon: "🔧" },
-  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/marketing", color: "text-pink-400",  icon: "📣" },
+  { role: "admin",      ar: "الإدارة",             en: "Admin Portal",     href: "/dashboard",     color: "text-primary",   icon: "⚙️" },
+  { role: "manager",    ar: "المدير",              en: "Manager Portal",   href: "/dashboard",   color: "text-violet-400",icon: "👔" },
+  { role: "staff",      ar: "الموظف",             en: "Staff Portal",     href: "/dashboard",     color: "text-teal-400",  icon: "🧑‍💻" },
+  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400",icon: "🤝" },
+  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400",icon: "🧑‍💼" },
+  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400",icon: "🏪" },
+  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/dashboard",  color: "text-yellow-400",icon: "🔧" },
+  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/dashboard", color: "text-pink-400",  icon: "📣" },
   { role: "user",       ar: "بوابة المستخدم",      en: "User Portal",      href: "/portal",    color: "text-blue-400",  icon: "👤" },
 ];
 /* Roles that can also access the central dashboard */
 const DASHBOARD_ROLES = new Set(["superadmin", "admin", "partner", "agent", "vendor", "provider", "marketing"]);
 
 const PORTAL_LINKS = [
-  { ar: "الإدارة",    en: "Admin Portal",     href: "/admin",     color: "text-primary" },
-  { ar: "الشريك",     en: "Partner Portal",   href: "/partner",   color: "text-indigo-400" },
-  { ar: "الوكيل",     en: "Agent Portal",     href: "/agent",     color: "text-emerald-400" },
-  { ar: "البائع",     en: "Vendor Portal",    href: "/vendor",    color: "text-orange-400" },
-  { ar: "التسويق",    en: "Marketing Portal", href: "/marketing", color: "text-pink-400" },
+  { ar: "الإدارة",    en: "Admin Portal",     href: "/dashboard",     color: "text-primary" },
+  { ar: "الشريك",     en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400" },
+  { ar: "الوكيل",     en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400" },
+  { ar: "البائع",     en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400" },
+  { ar: "التسويق",    en: "Marketing Portal", href: "/dashboard", color: "text-pink-400" },
   { ar: "المستخدم",   en: "User Portal",      href: "/portal",    color: "text-blue-400" },
-  { ar: "AI Chat",    en: "AI Chat",          href: "/chat",      color: "text-cyan-400" },
+  { ar: "AI Chat",    en: "AI Chat",          href: "/portal",      color: "text-cyan-400" },
 ];
 
 const ROLE_PORTAL: Record<string, { ar: string; en: string; href: string; color: string }> = {
   superadmin: { ar: "لوحة التحكم", en: "Dashboard",      href: "/dashboard", color: "text-red-400" },
-  admin:      { ar: "الإدارة",    en: "Admin Portal",    href: "/admin",     color: "text-primary" },
-  manager:    { ar: "المدير",     en: "Manager Portal",  href: "/manager",   color: "text-violet-400" },
-  staff:      { ar: "الموظف",     en: "Staff Portal",    href: "/staff",     color: "text-teal-400" },
-  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/partner",   color: "text-indigo-400" },
-  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/agent",     color: "text-emerald-400" },
-  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/vendor",    color: "text-orange-400" },
-  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/provider",  color: "text-yellow-400" },
-  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/marketing", color: "text-pink-400" },
+  admin:      { ar: "الإدارة",    en: "Admin Portal",    href: "/dashboard",     color: "text-primary" },
+  manager:    { ar: "المدير",     en: "Manager Portal",  href: "/dashboard",   color: "text-violet-400" },
+  staff:      { ar: "الموظف",     en: "Staff Portal",    href: "/dashboard",     color: "text-teal-400" },
+  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/dashboard",   color: "text-indigo-400" },
+  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/dashboard",     color: "text-emerald-400" },
+  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/dashboard",    color: "text-orange-400" },
+  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/dashboard",  color: "text-yellow-400" },
+  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/dashboard", color: "text-pink-400" },
   user:       { ar: "المستخدم",   en: "User Portal",     href: "/portal",    color: "text-blue-400" },
 };
 
@@ -105,22 +103,17 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await db
-          .from("website_settings")
-          .select("key,value_ar,value_en,is_active,category")
-          .eq("category", "footer")
-          .eq("is_active", true);
-        const map: Record<string, string> = {};
-        (data || []).forEach((r: any) => {
-          map[r.key] = R ? (r.value_ar || "") : (r.value_en || "");
+    legacySettings()
+      .then((st) => {
+        if (!st) return;
+        setFooterSettings({
+          footer_desc: st.footer_text || "",
+          footer_phone: st.phone || "",
+          footer_email: st.email || "",
+          footer_address: st.address || "",
         });
-        setFooterSettings(map);
-      } catch {
-        setFooterSettings({});
-      }
-    })();
+      })
+      .catch(() => setFooterSettings({}));
   }, [R]);
 
   const portalLink = userRole && userRole !== "user" ? ROLE_PORTAL[userRole] ?? ROLE_PORTAL.user : (user ? ROLE_PORTAL.user : null);
@@ -153,7 +146,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
     { l: R ? "منتجاتنا" : "Products", h: "/products" },
     { l: R ? "مشاريعنا" : "Projects", h: "/our-projects" },
     { l: R ? "باقاتنا" : "Our Plans", h: "/pricing" },
-    { l: "API", h: "/api-docs" },
+    { l: "API", h: "/request" },
   ];
   const companyDefault = [
     { l: R ? "من نحن" : "About Us", h: "/about" },
@@ -170,7 +163,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const portalLinks = parseLinks(footerSettings.footer_portal_links || "", portalsDefault);
 
   return (
-    <div dir={R ? "rtl" : "ltr"} className={cn("min-h-screen bg-background text-foreground", R && "rtl")}>
+    <div dir={R ? "rtl" : "ltr"} className={cn("kemet-site min-h-screen bg-background text-foreground", R && "rtl")}
+      data-theme={theme}>
       {/* Navbar */}
       <header className={cn(
         "sticky top-0 z-50 transition-all duration-300",
@@ -264,7 +258,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                       </button>
                     )}
                     {/* AI Chat always */}
-                    <button onClick={() => { navigate("/chat"); setPortalOpen(false); }}
+                    <button onClick={() => { navigate("/portal"); setPortalOpen(false); }}
                       className="w-full flex items-center gap-2 px-4 py-2.5 text-xs hover:bg-secondary/50 transition-colors text-start border-t border-border/50">
                       <span className="text-sm">🤖</span>
                       <span className="text-cyan-400">AI Chat</span>
@@ -340,7 +334,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                       <span className="text-sm">{p.icon}</span><span className={p.color}>{R ? p.ar : p.en}</span>
                     </button>
                   ))}
-                  <button onClick={() => { navigate("/chat"); setMobileOpen(false); }}
+                  <button onClick={() => { navigate("/portal"); setMobileOpen(false); }}
                     className="flex items-center gap-2 py-2.5 px-3 text-xs rounded-xl hover:bg-secondary/50 transition-all">
                     <span className="text-sm">🤖</span><span className="text-cyan-400">AI Chat</span>
                   </button>

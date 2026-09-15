@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { submitLead } from "@/lib/site-lead";
 import { cn } from "@/lib/utils";
 import { X, CheckCircle2, Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -176,111 +176,31 @@ export default function LeadCaptureModal({ open, onClose, type, isAr, meta }: Pr
     setError("");
     setSubmitting(true);
     try {
-      const db = supabase as any;
-      const table = TYPE_TABLE[type];
-
-      // Build payload based on type
-      // Note: service_requests historically used `company` (not `company_name`) and no `country`.
-      let payload: Record<string, unknown> = {
-        full_name: f(form.full_name),
-        email: f(form.email),
-        phone: f(form.phone) || null,
-        message: f(form.message) || null,
-        status: "pending",
-      };
-
-      if (type === "service" || type === "product" || type === "demo") {
-        payload = {
-          ...payload,
-          company: f(form.company_name) || null,
-          service_name: meta?.refName ?? (isAr ? "استفسار عام" : "General Inquiry"),
-          service_name_ar: meta?.refName ?? "استفسار عام",
-          source: type === "demo" ? "landing_demo" : type === "product" ? "products_page" : "services_page",
-          customer_name: f(form.full_name),
-          customer_email: f(form.email),
-          customer_phone: f(form.phone) || null,
-        };
-      }
-
-      if (type === "partner") {
-        payload = {
-          ...payload,
-          company_name: f(form.company_name) || null,
-          country: f(form.country) || null,
-          partner_type: f(form.partner_type) || null,
-          website_url: f(form.website_url) || null,
-          annual_revenue: f(form.annual_revenue) || null,
-        };
-      }
-
-      if (type === "agent") {
-        payload = {
-          ...payload,
-          company_name: f(form.company_name) || null,
-          country: f(form.country) || null,
-          region: f(form.region) || null,
-          territory: f(form.territory) || null,
-          experience_years: f(form.experience_years) || null,
-          existing_network: f(form.existing_network) || null,
-        };
-      }
-
-      if (type === "project") {
-        payload = {
-          ...payload,
-          company_name: f(form.company_name) || null,
-          country: f(form.country) || null,
-          project_type: f(form.project_type) || null,
-          project_scope: f(form.project_scope) || null,
-          budget_range: f(form.budget_range) || null,
-          timeline: f(form.timeline) || null,
-        };
-      }
-
-      const { error: dbErr } = await db.from(table).insert(payload);
-      if (dbErr) throw dbErr;
-
       const details: string[] = [];
-      if (f(form.country)) details.push(`Country: ${f(form.country)}`);
-      if (f(form.partner_type)) details.push(`Partner Type: ${f(form.partner_type)}`);
-      if (f(form.website_url)) details.push(`Website: ${f(form.website_url)}`);
-      if (f(form.annual_revenue)) details.push(`Annual Revenue: ${f(form.annual_revenue)}`);
-      if (f(form.region)) details.push(`Region: ${f(form.region)}`);
-      if (f(form.territory)) details.push(`Territory: ${f(form.territory)}`);
-      if (f(form.experience_years)) details.push(`Experience Years: ${f(form.experience_years)}`);
-      if (f(form.existing_network)) details.push(`Existing Network: ${f(form.existing_network)}`);
-      if (f(form.project_type)) details.push(`Project Type: ${f(form.project_type)}`);
-      if (f(form.project_scope)) details.push(`Project Scope: ${f(form.project_scope)}`);
-      if (f(form.budget_range)) details.push(`Budget Range: ${f(form.budget_range)}`);
-      if (f(form.timeline)) details.push(`Timeline: ${f(form.timeline)}`);
+      const push = (label: string, v: string) => { if (f(v)) details.push(`${label}: ${f(v)}`); };
+      push("Country", form.country);
+      push("Partner Type", form.partner_type);
+      push("Website", form.website_url);
+      push("Annual Revenue", form.annual_revenue);
+      push("Region", form.region);
+      push("Territory", form.territory);
+      push("Experience Years", form.experience_years);
+      push("Existing Network", form.existing_network);
+      push("Project Type", form.project_type);
+      push("Project Scope", form.project_scope);
+      push("Budget Range", form.budget_range);
+      push("Timeline", form.timeline);
 
-      const mergedMessage = [f(form.message), ...details].filter(Boolean).join("\n");
-      const emailPayload: Record<string, string> = {
-        name: f(form.full_name),
+      await submitLead({
+        kind: type,
+        refName: meta?.refName ?? (isAr ? titleObj.ar : titleObj.en),
+        fullName: f(form.full_name),
         email: f(form.email),
         phone: f(form.phone),
         company: f(form.company_name),
-        topic: meta?.refName ?? (isAr ? titleObj.ar : titleObj.en),
-        message: mergedMessage,
-      };
-      if (type === "product") {
-        emailPayload.product = meta?.refName ?? "Product Inquiry";
-      }
-
-      const { data: emailResult, error: emailInvokeError } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          section_en: emailSection.en,
-          section_ar: emailSection.ar,
-          data: emailPayload,
-        },
+        message: f(form.message),
+        details,
       });
-      if (emailInvokeError) throw emailInvokeError;
-      if (emailResult && typeof emailResult === "object" && "success" in emailResult && !emailResult.success) {
-        throw new Error("Email provider rejected the request");
-      }
-
-      // Fire n8n webhook (non-blocking)
-      fireWebhook({ type, table, ...payload, meta, submitted_at: new Date().toISOString() });
 
       setSuccess(true);
     } catch {

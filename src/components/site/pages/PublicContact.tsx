@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import RequestReceivedMessage from "@/components/shared/RequestReceivedMessage";
-import { supabase } from "@/integrations/supabase/client";
+import { legacySettings } from "@/lib/site-legacy";
+import { submitContact } from "@/lib/site-lead";
 import { toast } from "sonner";
 import {
   Phone, Mail, MapPin, Clock, Send, MessageSquare,
@@ -37,22 +38,15 @@ export default function PublicContact() {
   const [contactSettings, setContactSettings] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await supabase
-          .from("website_settings")
-          .select("key,value_ar,value_en,is_active,category")
-          .eq("category", "contact")
-          .eq("is_active", true);
-        const map: Record<string, string> = {};
-        (data || []).forEach((r: any) => {
-          map[r.key] = R ? (r.value_ar || "") : (r.value_en || "");
+    legacySettings()
+      .then((st) => {
+        if (!st) return;
+        setContactSettings({
+          contact_phone: st.phone || "",
+          contact_email: st.email || "",
         });
-        setContactSettings(map);
-      } catch {
-        setContactSettings({});
-      }
-    })();
+      })
+      .catch(() => setContactSettings({}));
   }, [R]);
 
   const contactPhone = contactSettings.contact_phone || (R ? "٠٠٠٠ ٠٠٠ ١٠٠ ٢٠+" : "+20 100 000 0000");
@@ -68,24 +62,13 @@ export default function PublicContact() {
     }
     setSending(true);
     try {
-      // Call the email edge function
-      const { data: emailResult, error: emailInvokeError } = await supabase.functions.invoke("send-contact-email", {
-        body: {
-          section_en: form.topic ? `Contact — ${form.topic}` : "Contact Form",
-          section_ar: form.topic ? `تواصل — ${CONTACT_TOPICS.find(t => t.en === form.topic)?.ar ?? form.topic}` : "نموذج التواصل",
-          data: {
-            name:    form.name,
-            email:   form.email,
-            phone:   form.phone,
-            topic:   form.topic,
-            message: form.message,
-          },
-        },
+      await submitContact({
+        fullName: form.name,
+        email: form.email,
+        phone: form.phone,
+        subject: form.topic || null,
+        message: form.message,
       });
-      if (emailInvokeError) throw emailInvokeError;
-      if (emailResult && typeof emailResult === "object" && "success" in emailResult && !emailResult.success) {
-        throw new Error("Email provider rejected the request");
-      }
       setSent(true);
       toast.success(R ? "تم إرسال رسالتك بنجاح! سنتواصل معك قريباً." : "Message sent successfully! We'll be in touch soon.");
     } catch {
