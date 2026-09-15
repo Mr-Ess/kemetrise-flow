@@ -65,6 +65,7 @@ export async function submitContact(input: {
   email?: string | null;
   phone?: string | null;
   subject?: string | null;
+  inquiryType?: string | null;
   message: string;
 }) {
   return createContactMessage({
@@ -74,7 +75,7 @@ export async function submitContact(input: {
       phone: input.phone ?? null,
       subject: input.subject ?? null,
       message: input.message,
-      inquiryType: "general",
+      inquiryType: input.inquiryType || "general",
       sourcePage: page(),
       utm: utm(),
     },

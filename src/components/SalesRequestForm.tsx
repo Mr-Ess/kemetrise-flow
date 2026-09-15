@@ -42,6 +42,12 @@ const TYPES = [
 
 const BUDGETS = ["أقل من 10,000", "10,000 – 50,000", "50,000 – 200,000", "أكثر من 200,000", "غير محدد"];
 
+const CONTACT_METHODS = [
+  { value: "whatsapp", label: "واتساب" },
+  { value: "phone", label: "مكالمة" },
+  { value: "email", label: "بريد إلكتروني" },
+];
+
 function readUtm(): Record<string, string> {
   if (typeof window === "undefined") return {};
   const p = new URLSearchParams(window.location.search);
@@ -137,6 +143,10 @@ export function SalesRequestForm(ctx: RequestFormContext) {
     );
   }
 
+  const typeOptions = useCategoryOptions("request_type");
+  const budgetOptions = useCategoryOptions("budget_range");
+  const contactOptions = useCategoryOptions("contact_method");
+
   return (
     <form
       className="grid gap-4 sm:grid-cols-2"
@@ -163,7 +173,10 @@ export function SalesRequestForm(ctx: RequestFormContext) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {TYPES.map((t) => (
+            {(typeOptions.length
+              ? typeOptions.map((o) => ({ value: o.value, label: o.label_ar }))
+              : TYPES
+            ).map((t) => (
               <SelectItem key={t.value} value={t.value}>
                 {t.label}
               </SelectItem>
@@ -179,7 +192,7 @@ export function SalesRequestForm(ctx: RequestFormContext) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {BUDGETS.map((b) => (
+            {(budgetOptions.length ? budgetOptions.map((o) => o.label_ar) : BUDGETS).map((b) => (
               <SelectItem key={b} value={b}>
                 {b}
               </SelectItem>
@@ -302,9 +315,14 @@ export function SalesRequestForm(ctx: RequestFormContext) {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="whatsapp">واتساب</SelectItem>
-                <SelectItem value="phone">مكالمة</SelectItem>
-                <SelectItem value="email">بريد إلكتروني</SelectItem>
+                {(contactOptions.length
+                  ? contactOptions.map((o) => ({ value: o.value, label: o.label_ar }))
+                  : CONTACT_METHODS
+                ).map((m) => (
+                  <SelectItem key={m.value} value={m.value}>
+                    {m.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
