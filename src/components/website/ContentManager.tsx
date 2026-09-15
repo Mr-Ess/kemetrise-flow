@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EmptyState, LoadingState } from "@/components/ui-kit";
+import { useCategoryOptions } from "@/lib/categories";
 
 type FieldType = "text" | "textarea" | "number" | "bool" | "list" | "date" | "select";
 type Field = {
@@ -531,6 +532,40 @@ export function ContentManager() {
           ) : null}
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function CategoryField({
+  label,
+  kind,
+  value,
+  onChange,
+}: {
+  label: string;
+  kind: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const options = useCategoryOptions(kind);
+  const known = options.some((o) => o.value === value);
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Select value={value || "__none"} onValueChange={(v) => onChange(v === "__none" ? "" : v)}>
+        <SelectTrigger>
+          <SelectValue placeholder="اختر" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="__none">بدون</SelectItem>
+          {options.map((o) => (
+            <SelectItem key={o.id} value={o.value}>
+              {o.label_ar}
+            </SelectItem>
+          ))}
+          {value && !known ? <SelectItem value={value}>{value}</SelectItem> : null}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
