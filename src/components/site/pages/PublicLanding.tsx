@@ -231,9 +231,9 @@ export default function PublicLanding() {
       {/* ══ 2. LOGO MARQUEE ══════════════════════════════════════ */}
       <section className="py-6 border-y border-border/30 overflow-hidden bg-secondary/10">
         <div className="flex gap-12 animate-marquee whitespace-nowrap">
-          {[...Array(3)].flatMap(() =>
+          {[...Array(3)].flatMap((_, r) =>
             ["ERP", "HR", "AI Chat", "Vendor", "Partner", "Agent", "Marketing", "Mall"].map((t, i) => (
-              <span key={`${t}-${i}`} className="text-xs font-display font-bold text-muted-foreground/60 uppercase tracking-widest shrink-0">
+              <span key={`${r}-${t}-${i}`} className="text-xs font-display font-bold text-muted-foreground/60 uppercase tracking-widest shrink-0">
                 ✦ {t}
               </span>
             ))
