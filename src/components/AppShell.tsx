@@ -2,15 +2,18 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Bell,
+  Briefcase,
   Building2,
   Calculator,
   ClipboardList,
   FileText,
   Gauge,
+  Handshake,
   Globe,
   LayoutDashboard,
   ListChecks,
   LogOut,
+  Megaphone,
   Menu,
   Package,
   PieChart,
@@ -19,8 +22,10 @@ import {
   Settings,
   ShieldCheck,
   ShoppingCart,
+  Store,
   Users,
   Workflow,
+  Wrench,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
@@ -93,6 +98,16 @@ const NAV: NavGroup[] = [
         icon: Gauge,
         roles: ["admin", "management"],
       },
+    ],
+  },
+  {
+    title: "البوابات",
+    items: [
+      { to: "/portals/partner", label: "بوابة الشريك", icon: Handshake, roles: ["admin", "management", "partner"] },
+      { to: "/portals/agent", label: "بوابة الوكيل", icon: Briefcase, roles: ["admin", "management", "agent"] },
+      { to: "/portals/vendor", label: "بوابة البائع", icon: Store, roles: ["admin", "management", "vendor"] },
+      { to: "/portals/provider", label: "بوابة المزوّد", icon: Wrench, roles: ["admin", "management", "provider"] },
+      { to: "/portals/marketing", label: "بوابة التسويق", icon: Megaphone, roles: ["admin", "management", "marketing"] },
     ],
   },
   {

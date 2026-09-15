@@ -48,11 +48,11 @@ const ALL_PORTALS: { role: string; ar: string; en: string; href: string; color: 
   { role: "admin",      ar: "الإدارة",             en: "Admin Portal",     href: "/dashboard",     color: "text-primary",   icon: "⚙️" },
   { role: "manager",    ar: "المدير",              en: "Manager Portal",   href: "/dashboard",   color: "text-violet-400",icon: "👔" },
   { role: "staff",      ar: "الموظف",             en: "Staff Portal",     href: "/dashboard",     color: "text-teal-400",  icon: "🧑‍💻" },
-  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400",icon: "🤝" },
-  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400",icon: "🧑‍💼" },
-  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400",icon: "🏪" },
-  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/dashboard",  color: "text-yellow-400",icon: "🔧" },
-  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/dashboard", color: "text-pink-400",  icon: "📣" },
+  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/portals/partner",   color: "text-indigo-400",icon: "🤝" },
+  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/portals/agent",     color: "text-emerald-400",icon: "🧑‍💼" },
+  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/portals/vendor",    color: "text-orange-400",icon: "🏪" },
+  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/portals/provider",  color: "text-yellow-400",icon: "🔧" },
+  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/portals/marketing", color: "text-pink-400",  icon: "📣" },
   { role: "user",       ar: "بوابة المستخدم",      en: "User Portal",      href: "/portal",    color: "text-blue-400",  icon: "👤" },
 ];
 /* Roles that can also access the central dashboard */
@@ -60,10 +60,10 @@ const DASHBOARD_ROLES = new Set(["superadmin", "admin", "partner", "agent", "ven
 
 const PORTAL_LINKS = [
   { ar: "الإدارة",    en: "Admin Portal",     href: "/dashboard",     color: "text-primary" },
-  { ar: "الشريك",     en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400" },
-  { ar: "الوكيل",     en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400" },
-  { ar: "البائع",     en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400" },
-  { ar: "التسويق",    en: "Marketing Portal", href: "/dashboard", color: "text-pink-400" },
+  { ar: "الشريك",     en: "Partner Portal",   href: "/portals/partner",   color: "text-indigo-400" },
+  { ar: "الوكيل",     en: "Agent Portal",     href: "/portals/agent",     color: "text-emerald-400" },
+  { ar: "البائع",     en: "Vendor Portal",    href: "/portals/vendor",    color: "text-orange-400" },
+  { ar: "التسويق",    en: "Marketing Portal", href: "/portals/marketing", color: "text-pink-400" },
   { ar: "المستخدم",   en: "User Portal",      href: "/portal",    color: "text-blue-400" },
   { ar: "AI Chat",    en: "AI Chat",          href: "/portal",      color: "text-cyan-400" },
 ];
@@ -73,13 +73,97 @@ const ROLE_PORTAL: Record<string, { ar: string; en: string; href: string; color:
   admin:      { ar: "الإدارة",    en: "Admin Portal",    href: "/dashboard",     color: "text-primary" },
   manager:    { ar: "المدير",     en: "Manager Portal",  href: "/dashboard",   color: "text-violet-400" },
   staff:      { ar: "الموظف",     en: "Staff Portal",    href: "/dashboard",     color: "text-teal-400" },
-  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/dashboard",   color: "text-indigo-400" },
-  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/dashboard",     color: "text-emerald-400" },
-  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/dashboard",    color: "text-orange-400" },
-  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/dashboard",  color: "text-yellow-400" },
-  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/dashboard", color: "text-pink-400" },
+  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/portals/partner",   color: "text-indigo-400" },
+  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/portals/agent",     color: "text-emerald-400" },
+  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/portals/vendor",    color: "text-orange-400" },
+  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/portals/provider",  color: "text-yellow-400" },
+  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/portals/marketing", color: "text-pink-400" },
   user:       { ar: "المستخدم",   en: "User Portal",     href: "/portal",    color: "text-blue-400" },
 };
+
+/** Fades sections in as they scroll into view across every public page. */
+function useScrollReveal() {
+  const location = useLocation();
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const root = document.querySelector(".kemet-site");
+    if (!root) return;
+    const targets: Element[] = [];
+    root.querySelectorAll("main section").forEach((section) => {
+      const kids = Array.from(section.children).filter((el) => !el.hasAttribute("aria-hidden"));
+      const list = kids.length > 1 ? kids : Array.from(section.children);
+      list.forEach((el, i) => {
+        if (el.hasAttribute("data-reveal")) return;
+        el.setAttribute("data-reveal", "");
+        (el as HTMLElement).style.transitionDelay = `${Math.min(i, 5) * 70}ms`;
+        targets.push(el);
+      });
+    });
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
+    );
+    targets.forEach((t) => io.observe(t));
+    const failsafe = window.setTimeout(
+      () => targets.forEach((t) => t.classList.add("is-visible")),
+      2500,
+    );
+    return () => {
+      io.disconnect();
+      window.clearTimeout(failsafe);
+    };
+  }, [location.pathname]);
+}
+
+/** Thin gold reading-progress bar at the very top of the page. */
+function ScrollProgress() {
+  const [pct, setPct] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const h = document.documentElement;
+      const max = h.scrollHeight - h.clientHeight;
+      setPct(max > 0 ? (h.scrollTop / max) * 100 : 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div className="fixed inset-x-0 top-0 z-[60] h-0.5 bg-transparent" aria-hidden>
+      <div
+        className="h-full bg-gradient-to-r from-primary/30 via-primary to-primary/30 transition-[width] duration-150"
+        style={{ width: `${pct}%` }}
+      />
+    </div>
+  );
+}
+
+/** Ambient tech backdrop: soft aurora blooms + faint engineering grid. */
+function SiteAmbience() {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden>
+      <div className="absolute -top-40 -start-32 size-[36rem] rounded-full bg-primary/10 blur-[120px] float-slow" />
+      <div className="absolute top-1/3 -end-40 size-[30rem] rounded-full bg-sky-500/8 blur-[130px]" />
+      <div className="absolute bottom-0 start-1/3 size-[28rem] rounded-full bg-emerald-500/7 blur-[130px]" />
+      <div
+        className="absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "linear-gradient(hsl(var(--primary)/0.05) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--primary)/0.05) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(75% 60% at 50% 25%, #000 30%, transparent 100%)",
+        }}
+      />
+    </div>
+  );
+}
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
   const { i18n } = useTranslation();
@@ -93,6 +177,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   const [aboutOpen, setAboutOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [footerSettings, setFooterSettings] = useState<Record<string, string>>({});
+  useScrollReveal();
   const userRoles = [userRole];
   const R = i18n.language === "ar";
 
@@ -165,6 +250,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
   return (
     <div dir={R ? "rtl" : "ltr"} className={cn("kemet-site min-h-screen bg-background text-foreground", R && "rtl")}
       data-theme={theme}>
+      <ScrollProgress />
+      <SiteAmbience />
       {/* Navbar */}
       <header className={cn(
         "sticky top-0 z-50 transition-all duration-300",
@@ -351,7 +438,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       </header>
 
       {/* Content */}
-      <main>{children}</main>
+      <main className="relative z-10">{children}</main>
 
       {/* Footer */}
       <footer className="border-t border-border/50 bg-sidebar/20 mt-20">

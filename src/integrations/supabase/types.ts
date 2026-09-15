@@ -1666,6 +1666,62 @@ export type Database = {
         }
         Relationships: []
       }
+      website_categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          is_active: boolean
+          kind: string
+          label_ar: string
+          label_en: string | null
+          parent_id: string | null
+          sort_order: number
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          kind: string
+          label_ar: string
+          label_en?: string | null
+          parent_id?: string | null
+          sort_order?: number
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean
+          kind?: string
+          label_ar?: string
+          label_en?: string | null
+          parent_id?: string | null
+          sort_order?: number
+          updated_at?: string
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "website_categories_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "website_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       website_contact_submissions: {
         Row: {
           assigned_to: string | null
@@ -2470,7 +2526,17 @@ export type Database = {
       next_code: { Args: { prefix: string; seq: string }; Returns: string }
     }
     Enums: {
-      app_role: "admin" | "management" | "sales" | "costing" | "staff"
+      app_role:
+        | "admin"
+        | "management"
+        | "sales"
+        | "costing"
+        | "staff"
+        | "partner"
+        | "agent"
+        | "vendor"
+        | "provider"
+        | "marketing"
       change_request_status: "open" | "in_review" | "accepted" | "rejected"
       cost_category:
         | "raw_materials"
@@ -2701,7 +2767,18 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "management", "sales", "costing", "staff"],
+      app_role: [
+        "admin",
+        "management",
+        "sales",
+        "costing",
+        "staff",
+        "partner",
+        "agent",
+        "vendor",
+        "provider",
+        "marketing",
+      ],
       change_request_status: ["open", "in_review", "accepted", "rejected"],
       cost_category: [
         "raw_materials",

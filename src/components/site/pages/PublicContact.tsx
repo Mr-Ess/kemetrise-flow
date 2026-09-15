@@ -14,6 +14,7 @@ import {
   Building2, Users, Headphones, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCategoryOptions } from "@/lib/categories";
 
 const CONTACT_TOPICS = [
   { en: "General Inquiry",    ar: "استفسار عام" },
@@ -33,6 +34,7 @@ export default function PublicContact() {
   const { i18n } = useTranslation();
   const R = i18n.language === "ar";
   const [form, setForm] = useState({ name: "", email: "", phone: "", topic: "", message: "" });
+  const topicOptions = useCategoryOptions("inquiry_type");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [contactSettings, setContactSettings] = useState<Record<string, string>>({});
@@ -67,6 +69,7 @@ export default function PublicContact() {
         email: form.email,
         phone: form.phone,
         subject: form.topic || null,
+        inquiryType: form.topic || null,
         message: form.message,
       });
       setSent(true);
@@ -159,7 +162,10 @@ export default function PublicContact() {
                         <label className="text-xs text-muted-foreground mb-1 block">{R ? "الموضوع" : "Topic"}</label>
                         <select value={form.topic} onChange={e => setForm(p => ({ ...p, topic: e.target.value }))} className="w-full text-xs h-9 rounded-md border border-border bg-background px-2">
                           <option value="">{R ? "اختر..." : "Choose..."}</option>
-                          {CONTACT_TOPICS.map(t => <option key={t.en} value={t.en}>{R ? t.ar : t.en}</option>)}
+                          {(topicOptions.length
+                            ? topicOptions.map(o => ({ en: o.value, ar: o.label_ar, enLabel: o.label_en || o.value }))
+                            : CONTACT_TOPICS.map(t => ({ en: t.en, ar: t.ar, enLabel: t.en }))
+                          ).map(t => <option key={t.en} value={t.en}>{R ? t.ar : t.enLabel}</option>)}
                         </select>
                       </div>
                     </div>

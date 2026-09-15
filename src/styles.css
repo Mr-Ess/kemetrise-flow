@@ -327,3 +327,168 @@
     opacity: 0.95;
   }
 }
+
+/* ============================================================
+   KemetRise website — interactive / premium effects
+   ============================================================ */
+
+@utility reveal-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility lift-card {
+  transition:
+    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+  &:hover {
+    transform: translateY(-6px);
+    border-color: hsl(var(--primary) / 0.45);
+    box-shadow:
+      0 18px 40px -20px hsl(var(--primary) / 0.45),
+      0 2px 0 0 hsl(var(--primary) / 0.15) inset;
+  }
+}
+
+@utility glass-panel {
+  background: color-mix(in oklab, hsl(var(--card)) 70%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid hsl(var(--primary) / 0.15);
+}
+
+@utility aurora-bg {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(38% 40% at 18% 12%, hsl(var(--primary) / 0.22), transparent 70%),
+      radial-gradient(34% 36% at 82% 22%, hsl(200 90% 55% / 0.16), transparent 70%),
+      radial-gradient(40% 42% at 50% 96%, hsl(150 70% 45% / 0.12), transparent 70%);
+    filter: blur(6px);
+    animation: aurora-drift 22s ease-in-out infinite alternate;
+  }
+}
+
+@utility tech-grid {
+  position: relative;
+  isolation: isolate;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+      linear-gradient(hsl(var(--primary) / 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--primary) / 0.07) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(70% 60% at 50% 40%, #000 40%, transparent 100%);
+  }
+}
+
+@utility shimmer-text {
+  background: linear-gradient(
+    100deg,
+    hsl(var(--primary)) 0%,
+    hsl(45 100% 78%) 35%,
+    hsl(var(--primary)) 70%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer-slide 6s linear infinite;
+}
+
+@utility float-slow {
+  animation: float-y 7s ease-in-out infinite;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(3%, 2%, 0) scale(1.08);
+  }
+}
+
+@keyframes shimmer-slide {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 220% 50%;
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Global polish for the public site only */
+.kemet-site {
+  scroll-behavior: smooth;
+}
+
+.kemet-site section {
+  position: relative;
+}
+
+.kemet-site [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kemet-site [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.kemet-site a,
+.kemet-site button {
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.kemet-site .group\/card:hover,
+.kemet-site [class*="rounded-"][class*="border"]:not(nav *):not(header *):hover {
+  border-color: hsl(var(--primary) / 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kemet-site [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .kemet-site * {
+    animation-duration: 0.001ms !important;
+  }
+}

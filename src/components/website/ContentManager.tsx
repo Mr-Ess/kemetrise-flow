@@ -24,9 +24,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EmptyState, LoadingState } from "@/components/ui-kit";
+import { useCategoryOptions } from "@/lib/categories";
 
-type FieldType = "text" | "textarea" | "number" | "bool" | "list" | "date";
-type Field = { key: string; label: string; type?: FieldType; required?: boolean };
+type FieldType = "text" | "textarea" | "number" | "bool" | "list" | "date" | "select";
+type Field = {
+  key: string;
+  label: string;
+  type?: FieldType;
+  required?: boolean;
+  /** For type "select": pulls its options from the shared categories list. */
+  kind?: string;
+};
 
 export type TableSpec = {
   table: string;
@@ -54,6 +62,8 @@ export const WEBSITE_TABLES: TableSpec[] = [
       { key: "seo_title", label: "عنوان SEO" },
       { key: "seo_description", label: "وصف SEO", type: "textarea" },
       { key: "footer_text", label: "نص التذييل" },
+      { key: "logo_url", label: "رابط الشعار" },
+      { key: "default_locale", label: "اللغة الافتراضية (ar / en)" },
     ],
   },
   {
@@ -66,7 +76,10 @@ export const WEBSITE_TABLES: TableSpec[] = [
       { key: "title", label: "العنوان", required: true },
       { key: "subtitle", label: "الوصف", type: "textarea" },
       { key: "primary_cta_label", label: "زر رئيسي" },
+      { key: "primary_cta_href", label: "رابط الزر الرئيسي" },
       { key: "secondary_cta_label", label: "زر ثانوي" },
+      { key: "secondary_cta_href", label: "رابط الزر الثانوي" },
+      { key: "media_url", label: "رابط الصورة/الفيديو" },
       { key: "is_active", label: "مفعّل", type: "bool" },
     ],
   },
@@ -113,7 +126,7 @@ export const WEBSITE_TABLES: TableSpec[] = [
     fields: [
       { key: "slug", label: "الرابط (slug)", required: true },
       { key: "name", label: "الاسم", required: true },
-      { key: "category", label: "التصنيف" },
+      { key: "category", label: "التصنيف", type: "select", kind: "service_category" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "features", label: "المزايا (سطر لكل ميزة)", type: "list" },
       { key: "is_featured", label: "مميّز", type: "bool" },
@@ -129,7 +142,8 @@ export const WEBSITE_TABLES: TableSpec[] = [
     fields: [
       { key: "slug", label: "الرابط (slug)", required: true },
       { key: "name", label: "الاسم", required: true },
-      { key: "category", label: "التصنيف" },
+      { key: "category", label: "التصنيف", type: "select", kind: "product_category" },
+      { key: "subcategory", label: "التصنيف الفرعي", type: "select", kind: "product_subcategory" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "price", label: "السعر", type: "number" },
       { key: "features", label: "المزايا (سطر لكل ميزة)", type: "list" },
@@ -148,7 +162,7 @@ export const WEBSITE_TABLES: TableSpec[] = [
       { key: "slug", label: "الرابط (slug)", required: true },
       { key: "title", label: "العنوان", required: true },
       { key: "client_name", label: "العميل" },
-      { key: "sector", label: "القطاع" },
+      { key: "sector", label: "القطاع", type: "select", kind: "project_sector" },
       { key: "status", label: "الحالة (completed / in_progress / planned)" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "is_published", label: "منشور", type: "bool" },
@@ -163,7 +177,7 @@ export const WEBSITE_TABLES: TableSpec[] = [
     fields: [
       { key: "slug", label: "الرابط (slug)", required: true },
       { key: "title", label: "العنوان", required: true },
-      { key: "category", label: "التصنيف" },
+      { key: "category", label: "التصنيف", type: "select", kind: "project_sector" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "results", label: "النتائج" },
       { key: "is_published", label: "منشور", type: "bool" },
@@ -177,8 +191,8 @@ export const WEBSITE_TABLES: TableSpec[] = [
     subtitleKey: "partner_type",
     fields: [
       { key: "name", label: "الاسم", required: true },
-      { key: "partner_type", label: "نوع الشراكة" },
-      { key: "category", label: "التصنيف" },
+      { key: "partner_type", label: "نوع الشراكة", type: "select", kind: "partner_type" },
+      { key: "category", label: "التصنيف", type: "select", kind: "partner_type" },
       { key: "description", label: "الوصف", type: "textarea" },
       { key: "website_url", label: "الموقع" },
       { key: "is_published", label: "منشور", type: "bool" },
@@ -192,7 +206,7 @@ export const WEBSITE_TABLES: TableSpec[] = [
     subtitleKey: "region",
     fields: [
       { key: "name", label: "الاسم", required: true },
-      { key: "region", label: "المنطقة" },
+      { key: "region", label: "المنطقة", type: "select", kind: "agent_region" },
       { key: "country", label: "الدولة" },
       { key: "coverage", label: "نطاق التغطية" },
       { key: "bio", label: "نبذة", type: "textarea" },
@@ -225,7 +239,7 @@ export const WEBSITE_TABLES: TableSpec[] = [
     fields: [
       { key: "slug", label: "الرابط (slug)", required: true },
       { key: "title", label: "العنوان", required: true },
-      { key: "category", label: "التصنيف" },
+      { key: "category", label: "التصنيف", type: "select", kind: "news_category" },
       { key: "author", label: "الكاتب" },
       { key: "excerpt", label: "المقتطف", type: "textarea" },
       { key: "content", label: "المحتوى", type: "textarea" },
@@ -314,7 +328,9 @@ export function ContentManager() {
       const { data, error } = await supabase
         .from(spec.table as "website_services")
         .select("*")
-        .order(spec.orderBy ?? "sort_order", { ascending: spec.orderBy ? false : true });
+        .order(spec.orderBy ?? (spec.singleton ? "created_at" : "sort_order"), {
+          ascending: spec.orderBy ? false : !spec.singleton,
+        });
       if (error) throw error;
       return (data ?? []) as Row[];
     },
@@ -480,6 +496,16 @@ export function ContentManager() {
                       />
                     </div>
                   );
+                if (f.type === "select")
+                  return (
+                    <CategoryField
+                      key={f.key}
+                      label={f.label}
+                      kind={f.kind!}
+                      value={String(value ?? "")}
+                      onChange={set}
+                    />
+                  );
                 return (
                   <div key={f.key}>
                     <Label>{f.label}</Label>
@@ -506,6 +532,40 @@ export function ContentManager() {
           ) : null}
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function CategoryField({
+  label,
+  kind,
+  value,
+  onChange,
+}: {
+  label: string;
+  kind: string;
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const options = useCategoryOptions(kind);
+  const known = options.some((o) => o.value === value);
+  return (
+    <div>
+      <Label>{label}</Label>
+      <Select value={value || "__none"} onValueChange={(v) => onChange(v === "__none" ? "" : v)}>
+        <SelectTrigger>
+          <SelectValue placeholder="اختر" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="__none">بدون</SelectItem>
+          {options.map((o) => (
+            <SelectItem key={o.id} value={o.value}>
+              {o.label_ar}
+            </SelectItem>
+          ))}
+          {value && !known ? <SelectItem value={value}>{value}</SelectItem> : null}
+        </SelectContent>
+      </Select>
     </div>
   );
 }
