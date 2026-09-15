@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { createPublicRequest } from "@/lib/site.functions";
+import { useCategoryOptions } from "@/lib/categories";
 
 export type RequestFormContext = {
   /** "public" = visitor from the website, "portal" = signed-in / linked customer */
