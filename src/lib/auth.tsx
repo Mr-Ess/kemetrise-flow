@@ -4,7 +4,17 @@ import type { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/integrations/supabase/client";
 
-export type AppRole = "admin" | "management" | "sales" | "costing" | "staff";
+export type AppRole =
+  | "admin"
+  | "management"
+  | "sales"
+  | "costing"
+  | "staff"
+  | "partner"
+  | "agent"
+  | "vendor"
+  | "provider"
+  | "marketing";
 
 type AuthValue = {
   session: Session | null;

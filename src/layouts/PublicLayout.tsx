@@ -48,11 +48,11 @@ const ALL_PORTALS: { role: string; ar: string; en: string; href: string; color: 
   { role: "admin",      ar: "الإدارة",             en: "Admin Portal",     href: "/dashboard",     color: "text-primary",   icon: "⚙️" },
   { role: "manager",    ar: "المدير",              en: "Manager Portal",   href: "/dashboard",   color: "text-violet-400",icon: "👔" },
   { role: "staff",      ar: "الموظف",             en: "Staff Portal",     href: "/dashboard",     color: "text-teal-400",  icon: "🧑‍💻" },
-  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400",icon: "🤝" },
-  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400",icon: "🧑‍💼" },
-  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400",icon: "🏪" },
-  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/dashboard",  color: "text-yellow-400",icon: "🔧" },
-  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/dashboard", color: "text-pink-400",  icon: "📣" },
+  { role: "partner",    ar: "الشريك",             en: "Partner Portal",   href: "/portals/partner",   color: "text-indigo-400",icon: "🤝" },
+  { role: "agent",      ar: "الوكيل",             en: "Agent Portal",     href: "/portals/agent",     color: "text-emerald-400",icon: "🧑‍💼" },
+  { role: "vendor",     ar: "البائع",             en: "Vendor Portal",    href: "/portals/vendor",    color: "text-orange-400",icon: "🏪" },
+  { role: "provider",   ar: "المزوّد",            en: "Provider Portal",  href: "/portals/provider",  color: "text-yellow-400",icon: "🔧" },
+  { role: "marketing",  ar: "التسويق",            en: "Marketing Portal", href: "/portals/marketing", color: "text-pink-400",  icon: "📣" },
   { role: "user",       ar: "بوابة المستخدم",      en: "User Portal",      href: "/portal",    color: "text-blue-400",  icon: "👤" },
 ];
 /* Roles that can also access the central dashboard */
@@ -60,10 +60,10 @@ const DASHBOARD_ROLES = new Set(["superadmin", "admin", "partner", "agent", "ven
 
 const PORTAL_LINKS = [
   { ar: "الإدارة",    en: "Admin Portal",     href: "/dashboard",     color: "text-primary" },
-  { ar: "الشريك",     en: "Partner Portal",   href: "/dashboard",   color: "text-indigo-400" },
-  { ar: "الوكيل",     en: "Agent Portal",     href: "/dashboard",     color: "text-emerald-400" },
-  { ar: "البائع",     en: "Vendor Portal",    href: "/dashboard",    color: "text-orange-400" },
-  { ar: "التسويق",    en: "Marketing Portal", href: "/dashboard", color: "text-pink-400" },
+  { ar: "الشريك",     en: "Partner Portal",   href: "/portals/partner",   color: "text-indigo-400" },
+  { ar: "الوكيل",     en: "Agent Portal",     href: "/portals/agent",     color: "text-emerald-400" },
+  { ar: "البائع",     en: "Vendor Portal",    href: "/portals/vendor",    color: "text-orange-400" },
+  { ar: "التسويق",    en: "Marketing Portal", href: "/portals/marketing", color: "text-pink-400" },
   { ar: "المستخدم",   en: "User Portal",      href: "/portal",    color: "text-blue-400" },
   { ar: "AI Chat",    en: "AI Chat",          href: "/portal",      color: "text-cyan-400" },
 ];
@@ -73,11 +73,11 @@ const ROLE_PORTAL: Record<string, { ar: string; en: string; href: string; color:
   admin:      { ar: "الإدارة",    en: "Admin Portal",    href: "/dashboard",     color: "text-primary" },
   manager:    { ar: "المدير",     en: "Manager Portal",  href: "/dashboard",   color: "text-violet-400" },
   staff:      { ar: "الموظف",     en: "Staff Portal",    href: "/dashboard",     color: "text-teal-400" },
-  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/dashboard",   color: "text-indigo-400" },
-  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/dashboard",     color: "text-emerald-400" },
-  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/dashboard",    color: "text-orange-400" },
-  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/dashboard",  color: "text-yellow-400" },
-  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/dashboard", color: "text-pink-400" },
+  partner:    { ar: "الشريك",     en: "Partner Portal",  href: "/portals/partner",   color: "text-indigo-400" },
+  agent:      { ar: "الوكيل",     en: "Agent Portal",    href: "/portals/agent",     color: "text-emerald-400" },
+  vendor:     { ar: "البائع",     en: "Vendor Portal",   href: "/portals/vendor",    color: "text-orange-400" },
+  provider:   { ar: "المزوّد",    en: "Provider Portal", href: "/portals/provider",  color: "text-yellow-400" },
+  marketing:  { ar: "التسويق",    en: "Marketing Portal",href: "/portals/marketing", color: "text-pink-400" },
   user:       { ar: "المستخدم",   en: "User Portal",     href: "/portal",    color: "text-blue-400" },
 };
 

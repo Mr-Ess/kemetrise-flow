@@ -11,7 +11,7 @@ import {
 
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
-import { formatCurrency, formatDate } from "@/lib/format";
+import { egp, formatDate } from "@/lib/format";
 import { EmptyState, LoadingState, PageHeader, SectionCard, StatusPill } from "@/components/ui-kit";
 import { Button } from "@/components/ui/button";
 
@@ -149,7 +149,7 @@ function MarketingPortal() {
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="عملاء محتملون" value={data?.leads.length ?? 0} />
         <Stat label="طلبات من الموقع" value={data?.requests.length ?? 0} />
-        <Stat label="القيمة التقديرية" value={formatCurrency(value)} />
+        <Stat label="القيمة التقديرية" value={egp(value)} />
       </div>
       <SectionCard title="أحدث طلبات الموقع">
         {(data?.requests ?? []).length === 0 ? (
@@ -231,7 +231,7 @@ function SalesPortal({ userId }: { userId: string | null }) {
       <div className="grid gap-3 sm:grid-cols-3">
         <Stat label="العملاء" value={data?.customers.length ?? 0} />
         <Stat label="الطلبات" value={data?.requests.length ?? 0} />
-        <Stat label="القيمة التقديرية" value={formatCurrency(value)} />
+        <Stat label="القيمة التقديرية" value={egp(value)} />
       </div>
       <SectionCard title="طلباتك">
         {(data?.requests ?? []).length === 0 ? (
