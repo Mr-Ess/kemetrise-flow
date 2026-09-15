@@ -351,17 +351,17 @@
     border-color 0.35s ease;
   &:hover {
     transform: translateY(-6px);
-    border-color: hsl(var(--primary) / 0.45);
+    border-color: color-mix(in oklab, var(--primary) 45%, transparent);
     box-shadow:
-      0 18px 40px -20px hsl(var(--primary) / 0.45),
-      0 2px 0 0 hsl(var(--primary) / 0.15) inset;
+      0 18px 40px -20px color-mix(in oklab, var(--primary) 45%, transparent),
+      0 2px 0 0 color-mix(in oklab, var(--primary) 15%, transparent) inset;
   }
 }
 
 @utility glass-panel {
-  background: color-mix(in oklab, hsl(var(--card)) 70%, transparent);
+  background: color-mix(in oklab, var(--card) 70%, transparent);
   backdrop-filter: blur(14px);
-  border: 1px solid hsl(var(--primary) / 0.15);
+  border: 1px solid color-mix(in oklab, var(--primary) 15%, transparent);
 }
 
 @utility aurora-bg {
@@ -374,7 +374,7 @@
     z-index: -1;
     pointer-events: none;
     background:
-      radial-gradient(38% 40% at 18% 12%, hsl(var(--primary) / 0.22), transparent 70%),
+      radial-gradient(38% 40% at 18% 12%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 70%),
       radial-gradient(34% 36% at 82% 22%, hsl(200 90% 55% / 0.16), transparent 70%),
       radial-gradient(40% 42% at 50% 96%, hsl(150 70% 45% / 0.12), transparent 70%);
     filter: blur(6px);
@@ -392,8 +392,8 @@
     z-index: -1;
     pointer-events: none;
     background-image:
-      linear-gradient(hsl(var(--primary) / 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--primary) / 0.07) 1px, transparent 1px);
+      linear-gradient(color-mix(in oklab, var(--primary) 7%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in oklab, var(--primary) 7%, transparent) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(70% 60% at 50% 40%, #000 40%, transparent 100%);
   }
@@ -402,9 +402,9 @@
 @utility shimmer-text {
   background: linear-gradient(
     100deg,
-    hsl(var(--primary)) 0%,
+    var(--primary) 0%,
     hsl(45 100% 78%) 35%,
-    hsl(var(--primary)) 70%
+    var(--primary) 70%
   );
   background-size: 220% 100%;
   -webkit-background-clip: text;
@@ -719,7 +719,7 @@
 
 .kemet-site .group\/card:hover,
 .kemet-site [class*="rounded-"][class*="border"]:not(nav *):not(header *):hover {
-  border-color: hsl(var(--primary) / 0.35);
+  border-color: color-mix(in oklab, var(--primary) 35%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

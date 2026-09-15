@@ -468,8 +468,8 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
               <div key={col.title}>
                 <h4 className="text-xs font-bold mb-3 uppercase tracking-widest text-foreground/70">{col.title}</h4>
                 <ul className="space-y-1.5">
-                  {col.links.map(lnk => (
-                    <li key={lnk.h}>
+                  {col.links.map((lnk, linkIndex) => (
+                    <li key={`${col.title}-${lnk.h}-${linkIndex}`}>
                       <button onClick={() => navigate(lnk.h)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">{lnk.l}</button>
                     </li>
                   ))}
