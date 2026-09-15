@@ -46,6 +46,7 @@ import { Route as AuthenticatedCustomersIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedCustomersIdRouteImport } from './routes/_authenticated/customers.$id'
 import { Route as AuthenticatedOrdersIndexRouteImport } from './routes/_authenticated/orders.index'
 import { Route as AuthenticatedOrdersIdRouteImport } from './routes/_authenticated/orders.$id'
+import { Route as AuthenticatedPortalsRoleRouteImport } from './routes/_authenticated/portals.$role'
 import { Route as AuthenticatedRequestsIndexRouteImport } from './routes/_authenticated/requests.index'
 import { Route as AuthenticatedRequestsIdRouteImport } from './routes/_authenticated/requests.$id'
 import { Route as AuthenticatedRequestsNewRouteImport } from './routes/_authenticated/requests.new'
@@ -240,6 +241,12 @@ const AuthenticatedOrdersIdRoute = AuthenticatedOrdersIdRouteImport.update({
   path: '/orders/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPortalsRoleRoute =
+  AuthenticatedPortalsRoleRouteImport.update({
+    id: '/portals/$role',
+    path: '/portals/$role',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRequestsIndexRoute =
   AuthenticatedRequestsIndexRouteImport.update({
     id: '/requests/',
@@ -302,6 +309,7 @@ export interface FileRoutesByFullPath {
   '/portal/': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
+  '/portals/$role': typeof AuthenticatedPortalsRoleRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/requests/new': typeof AuthenticatedRequestsNewRoute
   '/news/$slug': typeof SiteNewsSlugRoute
@@ -344,6 +352,7 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalIndexRoute
   '/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/orders/$id': typeof AuthenticatedOrdersIdRoute
+  '/portals/$role': typeof AuthenticatedPortalsRoleRoute
   '/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/requests/new': typeof AuthenticatedRequestsNewRoute
   '/news/$slug': typeof SiteNewsSlugRoute
@@ -389,6 +398,7 @@ export interface FileRoutesById {
   '/portal/': typeof PortalIndexRoute
   '/_authenticated/customers/$id': typeof AuthenticatedCustomersIdRoute
   '/_authenticated/orders/$id': typeof AuthenticatedOrdersIdRoute
+  '/_authenticated/portals/$role': typeof AuthenticatedPortalsRoleRoute
   '/_authenticated/requests/$id': typeof AuthenticatedRequestsIdRoute
   '/_authenticated/requests/new': typeof AuthenticatedRequestsNewRoute
   '/_site/news/$slug': typeof SiteNewsSlugRoute
@@ -433,6 +443,7 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/customers/$id'
     | '/orders/$id'
+    | '/portals/$role'
     | '/requests/$id'
     | '/requests/new'
     | '/news/$slug'
@@ -475,6 +486,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/customers/$id'
     | '/orders/$id'
+    | '/portals/$role'
     | '/requests/$id'
     | '/requests/new'
     | '/news/$slug'
@@ -519,6 +531,7 @@ export interface FileRouteTypes {
     | '/portal/'
     | '/_authenticated/customers/$id'
     | '/_authenticated/orders/$id'
+    | '/_authenticated/portals/$role'
     | '/_authenticated/requests/$id'
     | '/_authenticated/requests/new'
     | '/_site/news/$slug'
@@ -797,6 +810,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOrdersIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portals/$role': {
+      id: '/_authenticated/portals/$role'
+      path: '/portals/$role'
+      fullPath: '/portals/$role'
+      preLoaderRoute: typeof AuthenticatedPortalsRoleRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/requests/': {
       id: '/_authenticated/requests/'
       path: '/requests'
@@ -853,6 +873,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedWebsiteRoute: typeof AuthenticatedWebsiteRoute
   AuthenticatedCustomersIdRoute: typeof AuthenticatedCustomersIdRoute
   AuthenticatedOrdersIdRoute: typeof AuthenticatedOrdersIdRoute
+  AuthenticatedPortalsRoleRoute: typeof AuthenticatedPortalsRoleRoute
   AuthenticatedRequestsIdRoute: typeof AuthenticatedRequestsIdRoute
   AuthenticatedRequestsNewRoute: typeof AuthenticatedRequestsNewRoute
   AuthenticatedCustomersIndexRoute: typeof AuthenticatedCustomersIndexRoute
@@ -878,6 +899,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedWebsiteRoute: AuthenticatedWebsiteRoute,
   AuthenticatedCustomersIdRoute: AuthenticatedCustomersIdRoute,
   AuthenticatedOrdersIdRoute: AuthenticatedOrdersIdRoute,
+  AuthenticatedPortalsRoleRoute: AuthenticatedPortalsRoleRoute,
   AuthenticatedRequestsIdRoute: AuthenticatedRequestsIdRoute,
   AuthenticatedRequestsNewRoute: AuthenticatedRequestsNewRoute,
   AuthenticatedCustomersIndexRoute: AuthenticatedCustomersIndexRoute,
